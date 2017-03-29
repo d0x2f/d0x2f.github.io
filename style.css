@@ -3,7 +3,7 @@
 html, body {
     background-color: #1e1e1e;
     color: #d4d4d4;
-    width: 720px;
+    width: 840px;
     min-height: 100%;
     font-family: 'Source Sans Pro', sans-serif;
     padding: 0px;
@@ -38,7 +38,7 @@ hr {
 #download-box {
     position: absolute;
     top: 0px;
-    width: 800px;
+    right: 0px;
     padding: 10px 40px;
     text-align: right;
 }
@@ -71,4 +71,38 @@ hr {
     background-color: #252525;
     padding: 40px;
     padding-top: 60px;
+}
+
+@media screen and (max-width: 840px)
+{
+    html, body {
+        width: auto;
+    }
+
+    #download-box {
+        width: auto;
+    }
+
+    #header {
+        width: auto;
+    }
+
+    #content {
+        width: auto;
+    }
+}
+
+
+@media screen and (max-width: 530px)
+{
+    #header {
+        height: auto;
+        text-align: center;
+    }
+
+    #avatar {
+        display: block;
+        float: none;
+        margin: 0 auto;
+    }
 }
