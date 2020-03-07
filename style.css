@@ -31,10 +31,6 @@ p {
     line-height: 1.5;
 }
 
-hr {
-    display: none;
-}
-
 #download-box {
     position: absolute;
     top: 0px;
