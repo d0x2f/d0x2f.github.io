@@ -38,5 +38,6 @@ h4 {
 #content {
     background-color: white;
     padding: 40px;
+    padding-bottom: 0px;
     width: 90%;
 }
