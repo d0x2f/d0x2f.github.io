@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+
+  <link rel="stylesheet" href="{{ get_url(path='style.css', trailing_slash=false) }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
+  <link rel="icon" href="/favicon.png" type="image/png">
+
+  {% if config.generate_feed %}
+  <link rel="alternate" type={% if config.feed_filename=="atom.xml" %}"application/atom+xml"{% else
+    %}"application/rss+xml"{% endif %} title="RSS" href="{{ get_url(path=config.feed_filename) | safe }}">
+  {% endif %}
+
+  {% block extra_head %}
+  {% endblock extra_head %}
+</head>
+
+<body>
+  <div class="middle">
+    {% block header %}
+    <div class="header">
+      <div class="container">
+        <div class="title">
+          {% block header_title %}
+          <a href="{{ config.base_url }}">{{ config.title }}</a>
+          {% endblock header_title %}
+        </div>
+      </div>
+
+      {% block links %}
+      <div class="links">
+        <a href="https://github.com/d0x2f" target="_blank">
+          {{ load_data(path="static/github-mark-white.svg") | safe }}
+        </a>
+        <a href="https://linkedin.com/in/dylanmcgannon" target="_blank">
+          {{ load_data(path="static/InBug-White.svg") | safe }}
+        </a>
+      </div>
+      {% endblock links %}
+    </div>
+    {% endblock header %}
+
+    <div class="content container">
+      {% block content %}
+      <div class="posts">
+        {% for page in section.pages | reverse %}
+        <div class="post-row">
+          <span class="date">{{ page.date | date(format="%-d %b %Y") }}</span>
+          <span class="title">
+            <a href="{{ page.permalink }}">
+              {{ page.title | safe }}
+            </a>
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endblock content %}
+    </div>
+  </div>
+
+</body>
+
+</html>

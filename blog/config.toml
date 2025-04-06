@@ -1,0 +1,10 @@
+title = "D/"
+base_url = "https://dyl.dog"
+compile_sass = true
+build_search_index = true
+minify_html = false
+taxonomies = [{ name = "tags", feed = true, render = false }]
+
+[markdown]
+highlight_code = true
+highlight_theme = "monokai"

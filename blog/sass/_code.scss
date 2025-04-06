@@ -1,0 +1,29 @@
+pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow: auto;
+}
+
+pre[data-linenos] {
+  padding: 1rem 0;
+}
+
+pre table td {
+  padding: 0;
+}
+
+pre table td:nth-of-type(1) {
+  text-align: center;
+  vertical-align: top;
+  user-select: none;
+}
+
+pre mark {
+  display: block;
+  background-color: rgba(254, 252, 232, 0.9);
+}
+
+pre table {
+  width: 100%;
+  border-collapse: collapse;
+}

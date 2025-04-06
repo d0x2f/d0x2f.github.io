@@ -1,0 +1,69 @@
+@import 'variables';
+@import 'code';
+
+body {
+  font: 100% $font-stack;
+  color: $text-color;
+  background-color: $background-color;
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  color: $text-color;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $secondary-color;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+.middle {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80ch
+}
+
+.header {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.posts {
+  display: table;
+}
+
+.posts .post-row {
+  display: table-row;
+  justify-content: space-between;
+  font-size: 1.2rem;
+}
+
+.posts .post-row > * {
+  display: table-cell
+}
+
+.post-row .date {
+  padding-right: 1rem;
+}
+
+.date {
+  color: $text-color-secondary;
+}
+
+.posts .post .title {
+  flex-grow: 1;
+}
+
+.content > .post a {
+  text-decoration: underline;
+}

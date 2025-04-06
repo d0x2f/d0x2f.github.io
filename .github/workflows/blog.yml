@@ -1,0 +1,15 @@
+on: push
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v4
+      - name: "build and deploy"
+        uses: shalzz/zola-deploy-action@master
+        env:
+          PAGES_BRANCH: master
+          OUT_DIR: blog/public
+          BUILD_DIR: blog
+          CHECK_LINKS: true
