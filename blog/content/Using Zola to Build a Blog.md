@@ -291,6 +291,6 @@ Checking all internal links with anchors.
 Done in 8ms.
 ```
 
-This will produce all your compiled site files in the `public/` directory, ready to be served by your faviourite hosting provider.
+This will produce all your compiled site files in the `public/` directory, ready to be served by your favourite hosting provider.
 
-This very blog is written using Zola (at the time of writing), you can check out the source code on [GitHub](https://github.com/d0x2f/d0x2f.github.io/tree/master/blog) for some more usage examples.
+This very blog is written using Zola (at the time of writing), you can check out the source code on [GitHub](https://github.com/d0x2f/d0x2f.github.io/tree/main/blog) for some more usage examples.
