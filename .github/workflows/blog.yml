@@ -13,3 +13,4 @@ jobs:
           OUT_DIR: blog/public
           BUILD_DIR: blog
           CHECK_LINKS: true
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
