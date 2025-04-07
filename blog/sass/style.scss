@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'code';
+@import 'blockquote';
 
 body {
   font: 100% $font-stack;
@@ -20,6 +21,8 @@ a:hover {
 
 h1, h2, h3, h4, h5 {
   margin: 0;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .middle {
@@ -27,7 +30,9 @@ h1, h2, h3, h4, h5 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 80ch
+  width: 100%;
+  max-width: 80ch;
+  box-sizing: border-box;
 }
 
 .header {
@@ -67,3 +72,21 @@ h1, h2, h3, h4, h5 {
 .content > .post a {
   text-decoration: underline;
 }
+
+
+.content > .post .zola-anchor {
+  text-decoration: none;
+
+}
+
+.transparent-bg {
+  background-color: #1e1e1e; /* base dark background */
+  background-image: 
+    linear-gradient(45deg, #444 25%, transparent 25%),
+    linear-gradient(-45deg, #444 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #444 75%),
+    linear-gradient(-45deg, transparent 75%, #444 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+

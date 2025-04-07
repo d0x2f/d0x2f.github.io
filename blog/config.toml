@@ -8,3 +8,4 @@ taxonomies = [{ name = "tags", feed = true, render = false }]
 [markdown]
 highlight_code = true
 highlight_theme = "monokai"
+insert_anchor_links = "heading"

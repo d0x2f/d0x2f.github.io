@@ -1,0 +1,16 @@
+@import 'variables';
+
+blockquote {
+  font: 80% $font-stack;
+  margin: 0;
+  padding: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-left: 3px solid $primary-color;
+  background-color: $tertiary-color;
+} 
+
+blockquote p {
+  margin: 0;
+  padding: 0;
+} 
