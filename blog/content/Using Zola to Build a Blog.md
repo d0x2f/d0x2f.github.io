@@ -47,7 +47,7 @@ Of course you do.
 
 At this point I was thinking "why not?". What this does is set the `build_search_index` config option to true, which, when your site is compiled, will include a generated search index javascript file in the built website. You can use this search index in your templates to filter and find articles with a search box.
 
-Note that all these questions simply set a config option. There are no complicated dependency fetching, version compatibility issues, vulnerability reports and everything else you may have stressed about with dynamic front-end frameworks. Everything you choose to enable is provided by and built-in to Zola.
+Note that all these questions simply set a config option. There's no complicated dependency fetching, version compatibility issues, vulnerability reports and everything else you may have stressed about with dynamic front-end frameworks. Everything you choose to enable is provided by and built-in to Zola.
 
 After this, a bare-bones site will be created in the `myblog` folder with this structure:
 
@@ -253,7 +253,7 @@ And this is one such block substitution. What we're doing here is replacing the 
 ### themes/
 
 The final folder to talk about is `themes`.
-I won't be using it this project, but what it lets you do is import another Zola sites templates, styles and resources. This is a very elegant way to adopt a theme of another site.
+I won't be using it in this project, but what it lets you do is import another Zola sites templates, styles and resources. This is a very elegant way to adopt a theme of another site.
 Any Zola site can be used as a theme, there's nothing special needed to make a theme a theme other than a `theme.toml` file, which just adds some metadata and usage information.
 
 Anyway, themes are a topic for another article, let's get on with building the site.
