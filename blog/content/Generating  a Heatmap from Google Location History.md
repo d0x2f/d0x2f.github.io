@@ -13,13 +13,13 @@ tags = ["android", "google", "location", "history", "heatmap"]
 
 ## Google Takeout Is No Longer an Option
 
-I used to use [this](https://locationhistoryvisualizer.com/heatmap/) tool to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid — and even if you use the newer export method, the tool doesn’t work.
+I used to use [this](https://locationhistoryvisualizer.com/heatmap/) tool to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid and even if you use the newer export method, the tool doesn’t work.
 
 Location history is now stored **locally on your phone**, and the export workflow has changed.
 
 ## Exporting Your Location History
 
-You can still export your location history — just not through Takeout. Here’s how:
+You can still export your location history from your phone like so:
 
 For Android:
 
