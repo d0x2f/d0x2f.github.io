@@ -1,13 +1,15 @@
 .imageHero {
   display: flex;
-  padding: 0;
-  margin: 0;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 100%;
 }
 
 .imageHero img {
-  flex: 1 1 0;
-  margin: 0.1rem;
   width: 100%;
+  margin: 0.1rem;
   height: auto;
+  flex: 1 1 auto;
   object-fit: cover;
+  display: block;
 }

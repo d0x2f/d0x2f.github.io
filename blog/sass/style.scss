@@ -9,6 +9,7 @@ body {
   background-color: $background-color;
   display: flex;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 a {
