@@ -11,13 +11,13 @@ tags = ["android", "google", "location", "history", "heatmap"]
 {{ image(path="generating-a-heatmap-from-google-location-history/japan.png", width=200, height=180, op="fit_height") }}
 {% end %}
 
-# Google Takeout Is No Longer an Option
+## Google Takeout Is No Longer an Option
 
 I used to use [this](https://locationhistoryvisualizer.com/heatmap/) tool to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid — and even if you use the newer export method, the tool doesn’t work.
 
 Location history is now stored **locally on your phone**, and the export workflow has changed.
 
-# Exporting Your Location History
+## Exporting Your Location History
 
 You can still export your location history — just not through Takeout. Here’s how:
 
@@ -35,13 +35,13 @@ For iPhone (I'm reliably informed):
 4. Tap Export Timeline Data.
 5. Save/share the .json file and transfer it to your computer.
 
-# Generate a Heatmap with Google Maps API
+## Generate a Heatmap with Google Maps API
 
 To visualize your data, you’ll need a **Google Maps API key**, which requires a Google Cloud account with billing set up.
 
 I won’t go into the setup here, but you can follow the official [Google Maps API key documentation](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
-# A Minimal Heatmap Web App
+## A Minimal Heatmap Web App
 
 Let's create a simple web app that loads the Google Maps SDK, loads our location history file and generates a heatmap.
 
