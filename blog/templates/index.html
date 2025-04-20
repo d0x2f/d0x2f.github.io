@@ -48,7 +48,7 @@
     <div class="content container">
       {% block content %}
       <div class="posts">
-        {% for page in section.pages | reverse %}
+        {% for page in section.pages %}
         <div class="post-row">
           <span class="date">{{ page.date | date(format="%-d %b %Y") }}</span>
           <span class="title">

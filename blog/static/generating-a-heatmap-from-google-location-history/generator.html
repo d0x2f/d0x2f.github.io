@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Timeline Heatmap</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+      background-color: #f5f7fa;
+    }
+
+    #map {
+      display: none;
+      height: 100%;
+    }
+
+    #input,
+    #loading {
+      display: none;
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    #loading p {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-upload-wrapper {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .file-upload-label {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .file-upload-label:hover,
+    .file-upload-label:focus-visible {
+      background-color: #0056b3;
+    }
+
+    #fileName {
+      font-size: 0.95rem;
+      color: #333;
+      font-style: italic;
+    }
+
+    #fileName[aria-live] {
+      display: inline-block;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover,
+    button:focus-visible {
+      background-color: #0056b3;
+    }
+
+    .error {
+      display: block;
+      margin-top: 0.5rem;
+      color: #c00;
+      font-size: 0.9rem;
+    }
+
+    .instructions {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f0f0f5;
+      border-radius: 8px;
+    }
+
+    .instructions h3,
+    .instructions h4 {
+      margin-top: 1rem;
+    }
+
+    .instructions code {
+      background-color: #eee;
+      padding: 0 3px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .instructions li {
+      margin-bottom: 0.5rem;
+    }
+
+    fieldset {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    label,
+    #submitButton {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading">
+    <p>Loading map data, please wait...</p>
+  </div>
+
+  <div id="input">
+    <fieldset>
+      <legend>
+        <h2>📂 Upload Timeline File</h2>
+      </legend>
+      <label for="fileInput">Choose your exported <code>.json</code> file:</label>
+      <div class="file-upload-wrapper">
+        <label class="file-upload-label" for="fileInput">Browse</label>
+        <span id="fileName" aria-live="polite">No file selected</span>
+      </div>
+      <input id="fileInput" type="file" />
+      <button id="submitButton" type="button">Submit</button>
+      <span id="error" class="error"></span>
+    </fieldset>
+
+    <div class="instructions">
+      <h3>📱 How to Export Timeline Data</h3>
+
+      <h4>Android</h4>
+      <ol>
+        <li>Go to <strong>Settings &gt; Location &gt; Location Services &gt; Timeline</strong>.</li>
+        <li>Tap <strong>Export Timeline Data</strong>.</li>
+        <li>Save the <code>.json</code> file and transfer it to your computer.</li>
+      </ol>
+
+      <h4>iPhone</h4>
+      <ol>
+        <li>Open the <strong>Google Maps</strong> app.</li>
+        <li>Go to <strong>Your Timeline</strong> from your profile.</li>
+        <li>Tap the <strong>⋮</strong> menu &gt; <strong>Location and privacy settings</strong>.</li>
+        <li>Tap <strong>Export Timeline Data</strong>.</li>
+        <li>Save/share the <code>.json</code> file and transfer it to your computer.</li>
+      </ol>
+
+      <p>Then upload the file above to visualize your movement heatmap!</p>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script>
+    const GOOGLE_MAPS_KEY = 'AIzaSyBTvqN89ijdjhkfOrN4ilm2xPrQ27FEh1A';
+
+    function pointFromString(str) {
+      if (!str) throw new Error("Cannot parse empty string");
+
+      const coords = str.replaceAll('\u00B0', '').split(',').map(s => s.trim());
+      if (coords.length !== 2) throw new Error(`Error parsing string: ${str}`);
+
+      const lat = parseFloat(coords[0]);
+      const lng = parseFloat(coords[1]);
+      if (isNaN(lat) || isNaN(lng)) throw new Error(`Invalid coordinate values: ${str}`);
+
+      return new google.maps.LatLng(lat, lng);
+    }
+
+    function extractSegments(segments) {
+      const points = [];
+      for (const segment of segments) {
+        points.push(...extractSegment(segment));
+      }
+      return points;
+    }
+
+    function extractSegment(segment) {
+      const points = [];
+      const tryAddPoint = (str) => {
+        try {
+          points.push(pointFromString(str));
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      (segment.timelinePath ?? []).forEach(p => {
+        if (p.point) tryAddPoint(p.point);
+      });
+
+      const visitLoc = segment.visit?.topCandidate?.placeLocation?.latLng;
+      const visitProb = segment.visit?.topCandidate?.probability ?? 0.5;
+      if (visitLoc && visitProb >= 0.5) tryAddPoint(visitLoc);
+
+      if (segment.activity?.start?.latLng) tryAddPoint(segment.activity.start.latLng);
+      if (segment.activity?.end?.latLng) tryAddPoint(segment.activity.end.latLng);
+
+      return points;
+    }
+
+    async function getPoints() {
+      const file = document.getElementById('fileInput').files[0];
+      if (!file) throw new Error("No file selected");
+      const data = await file.text();
+
+      let json;
+      try {
+        json = JSON.parse(data);
+      } catch {
+        throw new Error("Unable to parse input file as JSON. Please upload the correct exported file.");
+      }
+
+      const segments = json.semanticSegments;
+      if (!Array.isArray(segments)) {
+        throw new Error("No semanticSegments found in file. Ensure you exported Timeline data correctly.");
+      }
+
+      return extractSegments(segments);
+    }
+
+    async function renderMap() {
+      setPanel('loading');
+      const points = await getPoints();
+
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5,
+        center: points[0] ?? new google.maps.LatLng(0, 0),
+      });
+
+      const heatmap = new google.maps.visualization.HeatmapLayer({
+        data: points,
+        dissipating: true,
+        maxIntensity: 10,
+      });
+
+      heatmap.setMap(map);
+      setPanel('map');
+
+      console.log(`Loaded ${points.length} points.`);
+    }
+
+    async function tryRenderMap() {
+      try {
+        await renderMap();
+      } catch (e) {
+        document.getElementById('error').textContent = e.message;
+        setPanel('input');
+      }
+    }
+
+    function setPanel(panel) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('input').style.display = 'none';
+      document.getElementById('map').style.display = 'none';
+
+      if (panel === 'loading') {
+        document.getElementById('loading').style.display = 'block';
+      } else if (panel === 'map') {
+        document.getElementById('map').style.display = 'block';
+      } else {
+        document.getElementById('input').style.display = 'block';
+      }
+    }
+
+    function mapApiLoaded() {
+      setPanel('input');
+      document.getElementById('submitButton').addEventListener('click', tryRenderMap);
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=visualization&loading=async&callback=mapApiLoaded`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    document.getElementById('fileInput').addEventListener('change', function () {
+      const fileNameSpan = document.getElementById('fileName');
+      fileNameSpan.textContent = this.files.length > 0 ? this.files[0].name : 'No file selected';
+    });
+  </script>
+</body>
+
+</html>

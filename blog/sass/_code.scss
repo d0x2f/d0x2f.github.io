@@ -1,4 +1,7 @@
+@import 'variables';
+
 pre {
+  font: 130% $font-stack;
   border-radius: 0.5rem;
   padding: 1rem;
   overflow: auto;
