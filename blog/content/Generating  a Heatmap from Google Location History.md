@@ -5,6 +5,12 @@ date = "2025-04-20"
 tags = ["android", "google", "location", "history", "heatmap"]
 +++
 
+{% imageHero() %}
+{{ image(path="generating-a-heatmap-from-google-location-history/scotland.png", width=200, height=180, op="fit_height") }}
+{{ image(path="generating-a-heatmap-from-google-location-history/south-east-australia.png", width=200, height=180, op="fit_height") }}
+{{ image(path="generating-a-heatmap-from-google-location-history/japan.png", width=200, height=180, op="fit_height") }}
+{% end %}
+
 # Google Takeout Is No Longer an Option
 
 I used to use [this](https://locationhistoryvisualizer.com/heatmap/) tool to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid — and even if you use the newer export method, the tool doesn’t work.

@@ -1,0 +1,13 @@
+.imageHero {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.imageHero img {
+  flex: 1 1 0;
+  margin: 0.1rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
