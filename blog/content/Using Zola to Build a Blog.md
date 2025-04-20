@@ -7,7 +7,7 @@ tags = ["zola", "web", "markdown"]
 
 As an avid crustacean, when I look for something new to use, I google "\<thing I want\> rust". And so, when I needed a static site generator, I was introduced to [Zola](https://www.getzola.org/).
 
-It was a bit confusing at first to understand how a project was meant to be organised. There are a lot of default folders and the quick start guide told you where to create what, but it wasn't clear (to me at least) why.
+At first, it was a bit confusing to understand how a project was meant to be organised. There are a lot of default folders and the quick start guide told you where to create what, but it wasn't clear (to me at least) why.
 
 In this post, I'll aim to give an overview of how to build a simple blog site like this one using Zola.
 
@@ -47,7 +47,7 @@ Of course you do.
 
 At this point I was thinking "why not?". What this does is set the `build_search_index` config option to true, which, when your site is compiled, will include a generated search index javascript file in the built website. You can use this search index in your templates to filter and find articles with a search box.
 
-Note that all these questions simply set a config option. There's are no complicated dependency fetching, version compatibility issues, vulnerability reports and everything else you may have stressed about with dynamic front-end frameworks. Everything you choose to enable is provided by and built-in to Zola.
+Note that all these questions simply set a config option. There's no complicated dependency fetching, version compatibility issues, vulnerability reports and everything else you may have stressed about with dynamic front-end frameworks. Everything you choose to enable is provided by and built-in to Zola.
 
 After this, a bare-bones site will be created in the `myblog` folder with this structure:
 
@@ -119,7 +119,7 @@ Files in this folder will be compiled and rendered to plain `.css` files that yo
 
 You can add `_` prefix to the filename to prevent it being compiled into a `.css` file. But you can still `@import` it in other Sass files.
 
-Let's add a some Sass files:
+Let's add some Sass files:
 
 `sass/_variables.scss`
 
@@ -143,7 +143,7 @@ body {
 
 Here is where you'll place static files to include in your generated site. This might be images, audio, javascript etc.
 
-Let's include a `favicon.png` file to act as our sites thumbnail.
+Let's include a `favicon.png` file to act as our site's thumbnail.
 
 `static/favicon.png`
 
@@ -212,7 +212,7 @@ Here we see a call to what's referred to as a "short-code", which you can think 
 
 > {% for page in section.pages | reverse %}
 
-I won't explain what a for loop is, but you may be puzzled by the `section.pages` variable, what is it and where did it comes from? In Zola pages are organised into sections represented as subdirectories in the `templates/` folder. For this minimal example we only have the top level section and this for loop iterates over those.
+I won't explain what a for loop is, but you may be puzzled by the `section.pages` variable, what is it and where did it come from? In Zola pages are organised into sections represented as subdirectories in the `content/` folder. For this minimal example we only have the top level section and this for loop iterates over those.
 
 > {{ page.date | date(format="%-d %b %Y") }}
 
@@ -220,7 +220,7 @@ In the `content/` section we mentioned that the metadata in the `+++` block of t
 
 > {{ page.title | safe }}
 
-Another reference to page metadata, but what is the `safe` filter? It escapes any html in the input so that it isn't rendered. Use it when you want to print any content you want to show verbatim.
+Another reference to page metadata. The safe filter tells Zola not to escape HTML in the content, allowing it to be rendered as-is.
 
 Ok, now time for the article template. In Zola, this is the `page.html` file.
 
@@ -253,7 +253,7 @@ And this is one such block substitution. What we're doing here is replacing the 
 ### themes/
 
 The final folder to talk about is `themes`.
-I won't be using it this project, but what it lets you do is import another Zola sites templates, styles and resources. This is a very elegant way to adopt a theme of another site.
+I won't be using it in this project, but what it lets you do is import another Zola sites templates, styles and resources. This is a very elegant way to adopt a theme of another site.
 Any Zola site can be used as a theme, there's nothing special needed to make a theme a theme other than a `theme.toml` file, which just adds some metadata and usage information.
 
 Anyway, themes are a topic for another article, let's get on with building the site.
