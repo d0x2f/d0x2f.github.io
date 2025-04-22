@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}">
+<html lang="{{ lang }}" prefix="og: https://ogp.me/ns#">
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -11,13 +11,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
   <link rel="icon" href="/favicon.png" type="image/png">
 
-  {% if config.generate_feed %}
-  <link rel="alternate" type={% if config.feed_filename=="atom.xml" %}"application/atom+xml"{% else
-    %}"application/rss+xml"{% endif %} title="RSS" href="{{ get_url(path=config.feed_filename) | safe }}">
+  {% block rss %}
+  {%- if config.generate_feed %}
+  <link rel="alternate" type="application/rss+xml" title="RSS"
+    href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
   {% endif %}
+  {% endblock %}
 
-  {% block extra_head %}
-  {% endblock extra_head %}
+  {%- block extra_head %}{% endblock extra_head %}
 </head>
 
 <body>

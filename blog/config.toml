@@ -2,7 +2,9 @@ title = "D/"
 base_url = "https://dyl.dog"
 compile_sass = true
 build_search_index = true
-minify_html = false
+minify_html = true
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
 taxonomies = [{ name = "tags", feed = true, render = false }]
 
 [markdown]

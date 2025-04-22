@@ -1,8 +1,13 @@
 +++
 title = "Generating a Heatmap from Google Location History"
+description = "Using Google Maps Javascript API and Google a location history export from your phone to generate a heatmap overlay that visualises where you've been in the world."
 date = "2025-04-20"
 
+[taxonomies]
 tags = ["android", "google", "location", "history", "heatmap"]
+
+[extra]
+author = "Dylan McGannon"
 +++
 
 {% imageHero() %}
@@ -37,7 +42,7 @@ For iPhone (I'm reliably informed):
 
 ## Generate a Heatmap with Google Maps API
 
-To visualize your data, you’ll need a **Google Maps API key**, which requires a Google Cloud account with billing set up.
+To visualise your data, you’ll need a **Google Maps API key**, which requires a Google Cloud account with billing set up.
 
 I won’t go into the setup here, but you can follow the official [Google Maps API key documentation](https://developers.google.com/maps/documentation/javascript/get-api-key).
 

@@ -1,8 +1,13 @@
 +++
 title = "Using Zola to Build a Blog"
+description = "Zola is a static site generator written in Rust that includes all the bells and whistles built in. This post explores how to set up an initial basic blog site."
 date = "2025-04-06"
 
+[taxonomies]
 tags = ["zola", "web", "markdown"]
+
+[extra]
+author = "Dylan McGannon"
 +++
 
 As an avid crustacean, when I look for something new to use, I google "\<thing I want\> rust". And so, when I needed a static site generator, I was introduced to [Zola](https://www.getzola.org/).
