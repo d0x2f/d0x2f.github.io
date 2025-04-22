@@ -45,24 +45,42 @@ h1, h2, h3, h4, h5 {
   font-size: 1.5rem;
 }
 
-.posts {
-  display: table;
+@media (width >= 500px) {
+  .posts {
+    display: table;
+  }
+
+  .posts .post-row > * {
+    display: table-cell;
+  }
+  .posts .post-row {
+    display: table-row;
+  }
+
+  .post-row .date {
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+}
+
+@media (width < 500px) {
+  .posts span {
+    display: block;
+  }
+
+  .post-row {
+    margin-bottom: 1em;
+  }
 }
 
 .posts .post-row {
-  display: table-row;
   justify-content: space-between;
   font-size: 1.2rem;
 }
 
-.posts .post-row > * {
-  display: table-cell
-}
-
 .post-row .date {
-  padding-right: 1rem;
-  padding-bottom: 0.5rem;
-  text-align: right;
   white-space: nowrap;
 }
 
