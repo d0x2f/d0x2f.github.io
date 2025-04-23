@@ -27,6 +27,32 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 0.5rem;
 }
 
+.header .title svg {
+  color: $text-color;
+  width: 1em;
+  height: 1em;
+}
+
+#dog_sitting {
+  display: block;
+}
+
+#dog_standing {
+  display: none;
+}
+
+#dog_standing svg {
+  color: $secondary-color;
+}
+
+.header .title:hover #dog_sitting {
+  display: none;
+}
+
+.header .title:hover #dog_standing {
+  display: block;
+}
+
 .middle {
   margin: 1rem;
   display: flex;
@@ -86,7 +112,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .date {
-  color: $text-color-secondary;
+  color: $secondary-color;
 }
 
 .posts .post .title {

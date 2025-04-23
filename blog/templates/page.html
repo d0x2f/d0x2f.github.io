@@ -12,11 +12,11 @@
 <meta property="article:author" content="{{ page.extra.author }}" />
 {% endif -%}
 {%- if page.extra.image%}
-<meta property="og:image" content="{{ config.base_url }}{{ page.extra.image }}" />
+<meta property="og:image" content="{{ config.base_url }}/{{ page.extra.image }}" />
 {% endif -%}
 <meta property="og:url" content="{{ config.base_url }}/{{ page.slug }}" />
-{%- if page.extra.opengraph %}
-{%- for key, value in page.extra.opengraph %}
+{%- if page.extra.html_meta %}
+{%- for key, value in page.extra.html_meta %}
 <meta property="{{ key }}" content="{{ value }}" />
 {% endfor -%}
 {% endif -%}

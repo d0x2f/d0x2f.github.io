@@ -8,7 +8,7 @@ tags = ["android", "google", "location", "history", "heatmap"]
 
 [extra]
 author = "Dylan McGannon"
-image = "/generating-a-heatmap-from-google-location-history/scotland.png"
+image = "generating-a-heatmap-from-google-location-history/scotland.png"
 +++
 
 {% imageHero() %}

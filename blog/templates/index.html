@@ -26,11 +26,10 @@
     {% block header %}
     <div class="header">
       <div class="container">
-        <div class="title">
-          {% block header_title %}
-          <a href="{{ config.base_url }}">{{ config.title }}</a>
-          {% endblock header_title %}
-        </div>
+        <a href="{{ config.base_url }}" class="title">
+          <span id="dog_sitting">{{ load_data(path="static/dog_sitting.svg") | safe }}</span>
+          <span id="dog_standing">{{ load_data(path="static/dog_standing.svg") | safe }}</span>
+        </a>
       </div>
 
       {% block links %}
