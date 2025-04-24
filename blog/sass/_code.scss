@@ -4,7 +4,11 @@ pre {
   font: 130% $font-stack;
   border-radius: 0.5rem;
   padding: 1rem;
-  overflow: auto;
+  overflow: visible;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 pre[data-linenos] {

@@ -88,16 +88,15 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
       }
 
       function extractPointsFromSegment(segment) {
-        const points = [];
-
-        collectPathPoints(segment.timelinePath, points);
-        collectVisitPoint(segment.visit, points);
-        collectActivityPoints(segment.activity, points);
-
-        return points;
+        return [
+          ...collectPathPoints(segment.timelinePath),
+          ...collectVisitPoint(segment.visit),
+          ...collectActivityPoints(segment.activity)
+        ]
       }
 
-      function collectPathPoints(path, points) {
+      function collectPathPoints(path) {
+        const points = []
         for (const p of path ?? []) {
           if (p.point) {
             try {
@@ -107,9 +106,11 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
             }
           }
         }
+        return points;
       }
 
-      function collectVisitPoint(visit, points) {
+      function collectVisitPoint(visit) {
+        const points = []
         const loc = visit?.topCandidate?.placeLocation?.latLng;
         const prob = visit?.topCandidate?.probability ?? 0.5;
         if (loc && prob >= 0.5) {
@@ -119,25 +120,24 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
             console.error(error);
           }
         }
+        return points;
       }
 
-      function collectActivityPoints(activity, points) {
+      function collectActivityPoints(activity) {
+        const points = []
         const start = activity?.start?.latLng;
         const end = activity?.end?.latLng;
-        if (start) {
-          try {
-            points.push(pointFromString(start));
-          } catch (error) {
-            console.error(error);
+        try {
+          if (start) {
+              points.push(pointFromString(start));
           }
-        }
-        if (end) {
-          try {
-            points.push(pointFromString(end));
-          } catch (error) {
-            console.error(error);
+          if (end) {
+              points.push(pointFromString(end));
           }
+        } catch (error) {
+          console.error(error);
         }
+        return points;
       }
 
       async function renderMap() {
@@ -145,10 +145,13 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
         const json = JSON.parse(await file.text());
         const points = extractPoints(json);
 
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 5,
-          center: points[0] ?? { lat: 0, lng: 0 },
-        });
+        const map = new google.maps.Map(
+          document.getElementById("map"),
+          {
+            zoom: 5,
+            center: points[0] ?? { lat: 0, lng: 0 },
+          }
+        );
 
         const heatmap = new google.maps.visualization.HeatmapLayer({
           data: points,
@@ -159,10 +162,14 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
         heatmap.setMap(map);
       }
 
-      document.getElementById("submit").addEventListener("click", renderMap);
+      document
+        .getElementById("submit")
+        .addEventListener("click", renderMap);
 
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=visualization&loading=async`;
+      script.src = 'https://maps.googleapis.com/maps/api/js'
+        + `?key=${GOOGLE_MAPS_KEY}&libraries=visualization`
+        + '&loading=async';
       script.async = true;
       document.head.appendChild(script);
     </script>
