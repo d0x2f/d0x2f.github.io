@@ -8,6 +8,7 @@ tags = ["zola", "web", "markdown"]
 
 [extra]
 author = "Dylan McGannon"
+x_handle = "@D0x2f"
 +++
 
 As an avid crustacean, when I look for something new to use, I google "\<thing I want\> rust". And so, when I needed a static site generator, I was introduced to [Zola](https://www.getzola.org/).

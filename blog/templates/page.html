@@ -4,7 +4,9 @@
 
 {% block extra_head %}
 <meta property="og:title" content="{{ page.title }}" />
+<meta name="twitter:title" content="{{ page.title }}" />
 <meta property="og:description" content="{{ page.description }}" />
+<meta name="twitter:description" content="{{ page.description }}" />
 <meta name="description" content="{{ page.description }}" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="{{ page.date }}" />
@@ -12,10 +14,16 @@
 {%- if page.extra.author%}
 <meta property="article:author" content="{{ page.extra.author }}" />
 {% endif -%}
+{%- if page.extra.x_handle%}
+<meta name="twitter:creator" content="{{ page.extra.x_handle }}" />
+{% endif -%}
 {%- if page.extra.image%}
 <meta property="og:image" content="{{ config.base_url }}/{{ page.extra.image }}" />
+<meta name="twitter:image" content="{{ config.base_url }}/{{ page.extra.image }}" />
 {% endif -%}
 <meta property="og:url" content="{{ config.base_url }}/{{ page.slug }}" />
+<meta name="twitter:card" content="summary" />
+
 {%- if page.extra.html_meta %}
 {%- for key, value in page.extra.html_meta %}
 <meta property="{{ key }}" content="{{ value }}" />

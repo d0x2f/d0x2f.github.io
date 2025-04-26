@@ -8,6 +8,7 @@ tags = ["android", "google", "location", "history", "heatmap"]
 
 [extra]
 author = "Dylan McGannon"
+x_handle = "@D0x2f"
 image = "generating-a-heatmap-from-google-location-history/scotland.png"
 +++
 
