@@ -1,7 +1,22 @@
 @import 'variables';
 
+pre, code {
+  font-family: "Hack", monospace;
+}
+
+@media(max-width: 470px) {
+  pre, code {
+    font-size: 9px;
+  }
+}
+
+@media(min-width: 470px) and (max-width: 600px) {
+  pre, code {
+    font-size: 12px;
+  }
+}
+
 pre {
-  font: 130% $font-stack;
   border-radius: 0.5rem;
   padding: 1rem;
   overflow: visible;

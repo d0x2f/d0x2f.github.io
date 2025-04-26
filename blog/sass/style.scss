@@ -2,9 +2,9 @@
 @import 'code';
 @import 'blockquote';
 @import 'imageHero';
+@import 'fonts';
 
 body {
-  font: 100% $font-stack;
   color: $text-color;
   background-color: $background-color;
   display: flex;
@@ -27,10 +27,10 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 0.5rem;
 }
 
-.header .title svg {
+.header svg {
   color: $text-color;
-  width: 1em;
-  height: 1em;
+  width: 1.4em;
+  height: 1.4em;
 }
 
 #dog_sitting {

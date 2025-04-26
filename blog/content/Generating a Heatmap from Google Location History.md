@@ -73,18 +73,22 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
     <div id="map"></div>
 
     <script>
-      const GOOGLE_MAPS_KEY = "YOUR_GOOGLE_MAPS_API_KEY_HERE";
+      const GOOGLE_MAPS_KEY = "GOOGLE_MAPS_API_KEY";
 
       function pointFromString(str) {
         const coords = str
           .replaceAll("\u00B0", "")
           .split(",")
           .map((s) => parseFloat(s.trim()));
-        return new google.maps.LatLng(coords[0], coords[1]);
+        return new google.maps.LatLng(
+          coords[0],
+          coords[1]
+        );
       }
       function extractPoints(data) {
         const segments = data.semanticSegments ?? [];
-        return segments.flatMap(extractPointsFromSegment);
+        return segments
+          .flatMap(extractPointsFromSegment);
       }
 
       function extractPointsFromSegment(segment) {
@@ -111,8 +115,13 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
 
       function collectVisitPoint(visit) {
         const points = []
-        const loc = visit?.topCandidate?.placeLocation?.latLng;
-        const prob = visit?.topCandidate?.probability ?? 0.5;
+        const loc = visit?
+          .topCandidate?
+          .placeLocation?
+          .latLng;
+        const prob = visit?
+          .topCandidate?
+          .probability ?? 0.5;
         if (loc && prob >= 0.5) {
           try {
             points.push(pointFromString(loc));
@@ -141,7 +150,9 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
       }
 
       async function renderMap() {
-        const file = document.getElementById("fileInput").files[0];
+        const file = document
+          .getElementById("fileInput")
+          .files[0];
         const json = JSON.parse(await file.text());
         const points = extractPoints(json);
 
@@ -153,11 +164,13 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
           }
         );
 
-        const heatmap = new google.maps.visualization.HeatmapLayer({
-          data: points,
-          dissipating: true,
-          maxIntensity: 10,
-        });
+        const heatmap = new google.maps.visualization
+          .HeatmapLayer({
+            data: points,
+            dissipating: true,
+            maxIntensity: 10,
+          }
+        );
 
         heatmap.setMap(map);
       }
@@ -167,8 +180,10 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
         .addEventListener("click", renderMap);
 
       const script = document.createElement("script");
-      script.src = 'https://maps.googleapis.com/maps/api/js'
-        + `?key=${GOOGLE_MAPS_KEY}&libraries=visualization`
+      script.src = 'https://maps.googleapis.com'
+        + '/maps/api/js'
+        + `?key=${GOOGLE_MAPS_KEY}`
+        + '&libraries=visualization'
         + '&loading=async';
       script.async = true;
       document.head.appendChild(script);
