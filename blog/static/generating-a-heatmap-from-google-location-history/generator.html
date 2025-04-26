@@ -3,7 +3,22 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Timeline Heatmap</title>
+
+  <meta property="og:title" content="Location History Heatmap Generator" />
+  <meta property="og:description"
+    content="An online tool to generate a heatmap visualisation of your exported Google timeline location history." />
+  <meta name="description"
+    content="An online tool to generate a heatmap visualisation of your exported Google timeline location history." />
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-04-20" />
+  <meta property="article:author" content="Dylan McGannon" />
+  <meta property="og:image" content="https://dyl.dog/generating-a-heatmap-from-google-location-history/scotland.png" />
+  <meta property="og:image" content="https://dyl.dog/generating-a-heatmap-from-google-location-history/japan.png" />
+  <meta property="og:image"
+    content="https://dyl.dog/generating-a-heatmap-from-google-location-history/south-east-australia.png" />
+  <meta property="og:url" content="https://dyl.dog/generating-a-heatmap-from-google-location-history/generator.html" />
+
+  <title>Location History Heatmap Generator</title>
   <style>
     html,
     body {
@@ -130,6 +145,23 @@
     #submitButton {
       font-weight: bold;
     }
+
+    .imageHero {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .imageHero img {
+      width: 100%;
+      min-width: 0;
+      margin: 0.1rem;
+      height: auto;
+      flex: 1 1 auto;
+      object-fit: cover;
+      display: block;
+    }
   </style>
 </head>
 
@@ -139,6 +171,23 @@
   </div>
 
   <div id="input">
+    <h1>Location History Heatmap Generator</h1>
+    <div class="imageHero">
+      <img alt="Location history heatmap example of Scotland"
+        src="https://dyl.dog/generating-a-heatmap-from-google-location-history/scotland.png">
+      <img alt="Location history heatmap example of south east Australia"
+        src="https://dyl.dog/generating-a-heatmap-from-google-location-history/south-east-australia.png">
+      <img alt="Location history heatmap example of Japan"
+        src="https://dyl.dog/generating-a-heatmap-from-google-location-history/japan.png">
+    </div>
+    <p>
+      A quick and dirty tool to generate a heatmap from an export of your google timeline location history.<br />
+      You can <a href="/generating-a-heatmap-from-google-location-history" target="_blank">read a blog</a> about it
+      or <a
+        href="https://github.com/d0x2f/d0x2f.github.io/blob/main/blog/static/generating-a-heatmap-from-google-location-history/generator.html">view
+        the code
+        on github</a>.
+    </p>
     <fieldset>
       <legend>
         <h2>📂 Upload Timeline File</h2>
