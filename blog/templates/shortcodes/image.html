@@ -1,2 +1,2 @@
 {% set image = resize_image(path=path, width=width, height=height, op=op, format="webp") %}
-<img {% if class %}class="{{ class }}" {% endif %} src="{{ image.url }}" />
+<img {% if class %}class="{{ class }}" {% endif %} src="{{ image.url }}" alt="{{ alt }}" />

@@ -12,14 +12,38 @@ image = "generating-a-heatmap-from-google-location-history/scotland.png"
 +++
 
 {% imageHero() %}
-{{ image(path="generating-a-heatmap-from-google-location-history/scotland.png", width=400, height=360, op="fit_height") }}
-{{ image(path="generating-a-heatmap-from-google-location-history/south-east-australia.png", width=400, height=360, op="fit_height") }}
-{{ image(path="generating-a-heatmap-from-google-location-history/japan.png", width=400, height=360, op="fit_height") }}
+{{
+  image(
+    path="generating-a-heatmap-from-google-location-history/scotland.png",
+    width=400,
+    height=360,
+    op="fit_height",
+    alt="Location history heatmap example of Scotland"
+  )
+}}
+{{
+  image(
+    path="generating-a-heatmap-from-google-location-history/south-east-australia.png",
+    width=400,
+    height=360,
+    op="fit_height",
+    alt="Location history heatmap example of south east Australia"
+  )
+}}
+{{
+  image(
+    path="generating-a-heatmap-from-google-location-history/japan.png",
+    width=400,
+    height=360,
+    op="fit_height",
+    alt="Location history heatmap example of Japan"
+  )
+}}
 {% end %}
 
 ## Google Takeout Is No Longer an Option
 
-I used to use [this](https://locationhistoryvisualizer.com/heatmap/) tool to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid and even if you use the newer export method, the tool doesn’t work.
+I used to use [this tool](https://locationhistoryvisualizer.com/heatmap/) to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid and even if you use the newer export method, the tool doesn’t work.
 
 Location history is now stored **locally on your phone**, and the export workflow has changed.
 
@@ -192,4 +216,4 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
 </html>
 ```
 
-I've also made a hosted version you can use straight away without an API key <a href="generator.html" target="_blank">here</a>.
+I've also made <a href="generator.html" target="_blank">a hosted version</a> you can use straight away without an API key.

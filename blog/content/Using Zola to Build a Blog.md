@@ -152,7 +152,16 @@ Let's include a `favicon.png` file to act as our site's thumbnail.
 
 `static/favicon.png`
 
-{{ image(path="using-zola-to-build-a-blog/faviduck.png", width=100, height=100, op="fit", class="transparent-bg") }}
+{{
+  image(
+    path="using-zola-to-build-a-blog/faviduck.png",
+    width=100,
+    height=100,
+    op="fit",
+    alt="A duck",
+    class="transparent-bg"
+  )
+}}
 
 ### templates/
 
