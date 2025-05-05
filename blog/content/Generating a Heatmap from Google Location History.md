@@ -44,9 +44,11 @@ image = "generating-a-heatmap-from-google-location-history/scotland.png"
 
 ## Google Takeout Is No Longer an Option
 
-I used to use [this tool](https://locationhistoryvisualizer.com/heatmap/) to generate a heatmap from my Google Location History data. But now that Google has **removed location history exports from Google Takeout**, those instructions are no longer valid and even if you use the newer export method, the tool doesn’t work.
+The tool I used to use to generate a heatmap from my Google Location History data has stopped working due to the recent data migration that moved location history to local storage. In fact, most existing tools were written to process timeline data exported using Google takeout, from which location data is no longer available.
 
-Location history is now stored **locally on your phone**, and the export workflow has changed.
+I've written a <a href="generator.html" target="_blank">quick and dirty tool</a> to generate a heatmap based on the location data exported from your phone. You can use that tool directly if you like, it processes everything client-side and you can verify the [source code on github](https://github.com/d0x2f/d0x2f.github.io/blob/main/blog/static/generating-a-heatmap-from-google-location-history/generator.html).
+
+If you're hyper privacy conscious, then I've included a minimal version later in the article that you can code up and run yourself with a bit of setup.
 
 ## Exporting Your Location History
 
@@ -217,4 +219,4 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
 </html>
 ```
 
-I've also made <a href="generator.html" target="_blank">a hosted version</a> you can use straight away without an API key.
+Simply save this in a new html file, update the Google location history API key variable and open it in your favourite browser.
