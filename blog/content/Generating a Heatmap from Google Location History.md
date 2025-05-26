@@ -9,38 +9,19 @@ tags = ["android", "google", "location", "history", "heatmap"]
 [extra]
 author = "Dylan McGannon"
 x_handle = "@D0x2f"
-image = "generating-a-heatmap-from-google-location-history/scotland.png"
-+++
 
-{% imageHero() %}
-{{
-  image(
-    path="generating-a-heatmap-from-google-location-history/scotland.png",
-    width=400,
-    height=360,
-    op="fit_height",
-    alt="Location history heatmap example of Scotland"
-  )
-}}
-{{
-  image(
-    path="generating-a-heatmap-from-google-location-history/south-east-australia.png",
-    width=400,
-    height=360,
-    op="fit_height",
-    alt="Location history heatmap example of south east Australia"
-  )
-}}
-{{
-  image(
-    path="generating-a-heatmap-from-google-location-history/japan.png",
-    width=400,
-    height=360,
-    op="fit_height",
-    alt="Location history heatmap example of Japan"
-  )
-}}
-{% end %}
+[[extra.images]]
+path = "generating-a-heatmap-from-google-location-history/scotland.png"
+alt = "Location history heatmap example of Scotland"
+
+[[extra.images]]
+path = "generating-a-heatmap-from-google-location-history/south-east-australia.png"
+alt = "Location history heatmap example of south east Australia"
+
+[[extra.images]]
+path = "generating-a-heatmap-from-google-location-history/japan.png"
+alt = "Location history heatmap example of Japan"
++++
 
 ## Google Takeout Is No Longer an Option
 

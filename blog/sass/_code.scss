@@ -1,5 +1,11 @@
 @import 'variables';
 
+code:not(:where(pre code)) {
+  color: $secondary-color;
+  background-color: $tertiary-color;
+  padding: 0 0.2em;
+}
+
 pre, code {
   font-family: "Hack", monospace;
 }

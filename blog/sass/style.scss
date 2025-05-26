@@ -3,6 +3,7 @@
 @import 'blockquote';
 @import 'imageHero';
 @import 'fonts';
+@import 'toc';
 
 body {
   color: $text-color;
@@ -10,6 +11,7 @@ body {
   display: flex;
   justify-content: center;
   overflow-x: hidden;
+  margin: 0;
 }
 
 a {

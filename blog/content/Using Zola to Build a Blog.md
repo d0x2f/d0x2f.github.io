@@ -11,6 +11,8 @@ author = "Dylan McGannon"
 x_handle = "@D0x2f"
 +++
 
+## Intro
+
 As an avid crustacean, when I look for something new to use, I google "\<thing I want\> rust". And so, when I needed a static site generator, I was introduced to [Zola](https://www.getzola.org/).
 
 At first, it was a bit confusing to understand how a project was meant to be organised. There are a lot of default folders and the quick start guide told you where to create what, but it wasn't clear (to me at least) why.

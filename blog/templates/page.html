@@ -17,22 +17,22 @@
 {%- if page.extra.x_handle%}
 <meta name="twitter:creator" content="{{ page.extra.x_handle }}" />
 {% endif -%}
-{%- if page.extra.image%}
-<meta property="og:image" content="{{ config.base_url }}/{{ page.extra.image }}" />
-<meta name="twitter:image" content="{{ config.base_url }}/{{ page.extra.image }}" />
+{%- if page.extra.images[0] %}
+<meta property="og:image" content="{{ config.base_url }}/{{ page.extra.images[0] }}" />
+<meta name="twitter:image" content="{{ config.base_url }}/{{ page.extra.images[0] }}" />
 {% endif -%}
 <meta property="og:url" content="{{ config.base_url }}/{{ page.slug }}" />
 <meta name="twitter:card" content="summary" />
 
 {%- if page.extra.html_meta %}
-{%- for key, value in page.extra.html_meta %}
-<meta property="{{ key }}" content="{{ value }}" />
-{% endfor -%}
+  {%- for key, value in page.extra.html_meta %}
+    <meta property="{{ key }}" content="{{ value }}" />
+  {% endfor -%}
 {% endif -%}
 {%- if page.taxonomies.tags is defined %}
-{%- for tag in page.taxonomies.tags %}
-<meta property="article:tag" content="{{ tag }}" />
-{%- endfor %}
+  {%- for tag in page.taxonomies.tags %}
+    <meta property="article:tag" content="{{ tag }}" />
+  {%- endfor %}
 {%- endif %}
 {% endblock -%}
 
@@ -40,6 +40,37 @@
 <div class="post">
   <h1 class="title">{{ page.title }}</h1>
   <span class="date">{{ page.date | date(format="%-d %b %Y") }}</span>
+
+  {% if page.extra.images %}
+  <div class="imageHero">
+    {% for image in page.extra.images %}
+      {% set resized_image = resize_image(path=image.path, width=1024, op="fit_width", format="webp") %}
+      <img src="{{ resized_image.url }}" alt="{{ image.alt }}" />
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.toc %}
+  <div class="toc">
+  <h2>Table of Contents</h2>
+    <ul>
+    {% for h1 in page.toc %}
+      <li>
+        <a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
+        {% if h1.children %}
+          <ul>
+            {% for h2 in h1.children %}
+              <li>
+                <a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
   {{ page.content | safe }}
 </div>
 {% endblock content %}
