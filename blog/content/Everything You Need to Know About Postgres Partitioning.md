@@ -361,6 +361,7 @@ INSERT INTO invoice (created_at) VALUES (NOW());
 ```
 
 > ERROR:  new row for relation "invoice_created" violates partition constraint
+
 > DETAIL:  Failing row contains (ed3709da-45fd-4f6a-af6c-050593929a9e, paid, 2025-05-26 20:24:22.407953).
 
 This often occurs when an update to the partitioning key is attempted against a partition directly. For example, if the `status` column is a list type partitioning key:
