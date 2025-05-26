@@ -18,8 +18,8 @@
 <meta name="twitter:creator" content="{{ page.extra.x_handle }}" />
 {% endif -%}
 {%- if page.extra.images[0] %}
-<meta property="og:image" content="{{ config.base_url }}/{{ page.extra.images[0] }}" />
-<meta name="twitter:image" content="{{ config.base_url }}/{{ page.extra.images[0] }}" />
+<meta property="og:image" content="{{ config.base_url }}/{{ page.extra.images[0].path }}" />
+<meta name="twitter:image" content="{{ config.base_url }}/{{ page.extra.images[0].path }}" />
 {% endif -%}
 <meta property="og:url" content="{{ config.base_url }}/{{ page.slug }}" />
 <meta name="twitter:card" content="summary" />
