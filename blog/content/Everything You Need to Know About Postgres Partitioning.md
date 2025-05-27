@@ -17,7 +17,7 @@ alt = "Title image "
 
 ## What is Partitioning?
 
-Partitioning, in a nutshell, is splitting one large table into multiple smaller tables while transparently allowing usage as if it were a single table. Each partition is independent in terms of storage and each have their own indexes, they are just like any other table other than their status as a partition. A group of partitions is referred to collectively as the "partitioned table".
+Partitioning, in a nutshell, is splitting one large table into multiple smaller tables while transparently allowing usage as if it were a single table. Each partition is independent in terms of storage and has it's own indexes, they are just like any other table other than their status as a partition. A group of partitions is referred to collectively as the "partitioned table".
 
 ## Why use Partitions?
 
@@ -47,7 +47,7 @@ CREATE TABLE invoice_2025_05_26
   FOR VALUES FROM ('2025-05-26') TO ('2025-05-27');
 ```
 
-This type of partitioning is useful for time series data or any other kind of monotonically increasing value. It lets you easily drop, archive or seal old partitions since they're neatly contained into partitions.
+This type of partitioning is useful for time series data or any other kind of monotonically increasing values. It lets you easily drop, archive or seal old partitions since they're neatly contained into partitions.
 
 ### List
 
@@ -75,7 +75,7 @@ CREATE TABLE invoice_cancelled
   FOR VALUES IN ('cancelled');
 ```
 
-Partitioning using the list type is useful for splitting data into sets that are normally queries in isolation from each other. In our example, we might often query for value of unpaid invoices, or number of paid invoices per month etc. Splitting them by value like this makes it possible to direct those queries straight to the relevant data.
+Partitioning using the list type is useful for splitting data into sets that are normally queried in isolation from each other. In our example, we might often query for value of unpaid invoices, or number of paid invoices per month etc. Splitting them by value like this makes it possible to direct those queries straight to the relevant data.
 
 ### Hash
 
@@ -95,7 +95,7 @@ CREATE TABLE invoice_1
   FOR VALUES WITH (MODULUS 2, REMAINDER 1);
 ```
 
-You can use any combination of `MODULUS` and `REMAINDER` as long as your partitions don't overlap. What this partitioning type effectively does is to evenly distribute rows among a number of partitions, which can really help with insert performance since multiple backends are able to write new rows simultaneously. Each partition can be placed into a different table-spaces backed by independent storage medium, further improving IO performance. 
+You can use any combination of `MODULUS` and `REMAINDER`, as long as your partitions don't overlap. What this partitioning type effectively does is to evenly distribute rows among a number of partitions, which can really help with insert performance since multiple backends are able to write new rows simultaneously. Each partition can be placed into a different tablespace backed by independent storage medium, further improving IO performance. 
 
 There are some big drawbacks of hash partitioning however. They offer no advantage for indexing since rows are spread into partitions practically at random. This means that queries will need to scan all partitions to find records unless a specific partition key value is specified. I.e.
 ```sql
