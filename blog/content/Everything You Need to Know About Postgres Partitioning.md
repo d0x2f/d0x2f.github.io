@@ -210,7 +210,7 @@ In this way, using the query plan is useful for troubleshooting performance issu
 
 ## The Default Partition
 
-Ok, so you have a partitioned table and a bunch of partitions for various keys values. Let's say your automation failed to create today's partition for some reason. What happens when records are inserted?
+Ok, so you have a partitioned table and a bunch of partitions for various key values. Let's say your automation failed to create today's partition for some reason. What happens when records are inserted?
 
 ```psql
 postgres=# INSERT INTO invoice (created_at) values (now());
