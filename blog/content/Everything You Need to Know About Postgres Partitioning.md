@@ -114,7 +114,7 @@ They don't help with bulk operations as it's unlikely you'll ever want to delete
 
 The number of partitions is fixed, if you want to change it, you need to manually move data around, which is possible, but there is no automation to help you.
 
-## Combinations
+### Combinations
 
 You can also partition a partition for multi-level structures. For example, here's an invoice partitioned table using both range and list styles of partitioning.
 
