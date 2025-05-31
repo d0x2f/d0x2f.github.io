@@ -24,7 +24,8 @@ Partitioning, in a nutshell, is splitting one large table into multiple smaller 
 Partitions come with many advantages in PostgreSQL:
 
 - Query performance is often dramatically improved if relevant indexes can be loaded into memory. Having smaller tables and indexes makes this much more likely.
-- Furthermore, for some queries, it may even be faster to perform a sequence scan instead of using an index at all.
+- Furthermore, for some queries, it may even be faster to perform a sequence scan instead of using an index at all, which is made possible if partitions are small enough.
+- For queries that touch multiple partitions, operations for each can be done in parallel, giving a speed boost.
 - Some types of bulk operations are much easier to perform, such as bulk deletes, which can be designed as dropping partitions wholesale using `DROP TABLE ...` or by detaching the partition.
 - It keeps vacuum operations less intensive and allows what would otherwise be a single large (potentially disruptive) vacuum to be performed in smaller chunks (i.e. for each partition).
 
@@ -47,7 +48,7 @@ CREATE TABLE invoice_2025_05_26
   FOR VALUES FROM ('2025-05-26') TO ('2025-05-27');
 ```
 
-This type of partitioning is useful for time series data or any other kind of monotonically increasing values. It lets you easily drop, archive or seal old partitions since they're neatly contained into partitions.
+This type of partitioning is useful for time series data. It lets you easily drop, archive or seal old data since they're neatly contained into partitions.
 
 ### List
 
@@ -95,24 +96,27 @@ CREATE TABLE invoice_1
   FOR VALUES WITH (MODULUS 2, REMAINDER 1);
 ```
 
-You can use any combination of `MODULUS` and `REMAINDER`, as long as your partitions don't overlap. What this partitioning type effectively does is to evenly distribute rows among a number of partitions, which can really help with insert performance since multiple backends are able to write new rows simultaneously. Each partition can be placed into a different tablespace backed by independent storage medium, further improving IO performance. 
+You can use any combination of `MODULUS` and `REMAINDER`, as long as your partitions don't overlap. What this partitioning type effectively does is to evenly distribute rows among a number of partitions, which can really help with insert performance since multiple backends are able to write new rows simultaneously. Each partition can be placed into a different tablespace backed by independent storage medium, further improving IO performance.
 
 There are some big drawbacks of hash partitioning however. They offer no advantage for indexing since rows are spread into partitions practically at random. This means that queries will need to scan all partitions to find records unless a specific partition key value is specified. I.e.
+
 ```sql
   SELECT * FROM invoice WHERE
     uuid='d9ecdfbd-528d-4b3c-88d4-b4a6cec28772';
 ```
+
 This query can skip straight to the partition the row is in.
 
 ```sql
   SELECT * FROM invoice WHERE
     created_at >= NOW() - INTERVAL '1 DAY';
 ```
+
 Whereas this query will need to search each partition for matching rows.
 
-They don't help with bulk operations as it's unlikely you'll ever want to deleted all rows for which their partition key modulus *n* = *x*.
+They don't help with bulk operations as it's unlikely you'll ever want to deleted all rows for which their partition key modulus _n_ = _x_.
 
-The number of partitions is fixed, if you want to change it, you need to manually move data around, which is possible, but there is no automation to help you.
+The number of partitions is fixed, if you want to change it, you need to manually move data around, which is possible, but there is no built-in automation to help you.
 
 ### Combinations
 
@@ -150,7 +154,7 @@ CREATE TABLE invoice_cancelled_2025_05
   FOR VALUES FROM ('2025-05-01') TO ('2025-06-01');
 ```
 
-This way you have a partition for created invoices, and two sets of partitions for paid and cancelled invoices organised by month. 
+This way you have a partition for created invoices, and two sets of partitions for paid and cancelled invoices organised by month.
 
 ## Querying Partitioned Tables
 
@@ -285,7 +289,7 @@ Well, the solution is to either code this yourself using tools like `pg_cron` or
 
 Here I'll simply list a handful of common errors, an explanation about them and what to do about it.
 
-> ERROR:  updated partition constraint for default partition "invoice_default" would be violated by some row`
+> ERROR: updated partition constraint for default partition "invoice_default" would be violated by some row`
 
 This happens when you try to attach a partition for a value range for which the default partition currently holds a row. When you add a partition, PostgreSQL needs to add a constraint to the default partition that says it doesn't contain any rows that ought to be in the new partition. To add that constraint, it needs to scan the default partition to make sure it's true. During that scan, if it finds a conflicting row, it will emit this error.
 
@@ -316,9 +320,9 @@ WHERE invoice.uuid = invoices_to_update.uuid;
 COMMIT;
 ```
 
-> ERROR:  unique constraint on partitioned table must include all partitioning columns
+> ERROR: unique constraint on partitioned table must include all partitioning columns
 
-> DETAIL:  PRIMARY KEY constraint on table "invoice" lacks column "created_at" which is part of the partition key.
+> DETAIL: PRIMARY KEY constraint on table "invoice" lacks column "created_at" which is part of the partition key.
 
 Partitions with primary or unique keys, require that the partition key be part of it. This is because each partition is a separate table and there's no way to enforce uniqueness across all tables. By requiring that the partition key be part of the unique key, PostgreSQL is ensuring that a violation of the unique constraint can never happen.
 
@@ -341,9 +345,9 @@ CREATE TABLE invoice (
 ) PARTITION BY RANGE (created_at);
 ```
 
-> ERROR:  no partition of relation "invoice" found for row
+> ERROR: no partition of relation "invoice" found for row
 
-> DETAIL:  Partition key of the failing row contains (created_at) = (2025-05-31 14:08:46.126612+00).
+> DETAIL: Partition key of the failing row contains (created_at) = (2025-05-31 14:08:46.126612+00).
 
 This is fairly straight forward, there's simply no partition for the value range required by the new row. The solution is to create the partition, or fix the tooling used to automatically create partitions, whatever it is you use.
 
@@ -360,9 +364,9 @@ INSERT INTO invoice (created_at) VALUES (NOW());
 # Success
 ```
 
-> ERROR:  new row for relation "invoice_created" violates partition constraint
+> ERROR: new row for relation "invoice_created" violates partition constraint
 
-> DETAIL:  Failing row contains (ed3709da-45fd-4f6a-af6c-050593929a9e, paid, 2025-05-26 20:24:22.407953).
+> DETAIL: Failing row contains (ed3709da-45fd-4f6a-af6c-050593929a9e, paid, 2025-05-26 20:24:22.407953).
 
 This often occurs when an update to the partitioning key is attempted against a partition directly. For example, if the `status` column is a list type partitioning key:
 
@@ -370,7 +374,7 @@ This often occurs when an update to the partitioning key is attempted against a 
 UPDATE invoice_created SET status='paid';
 ```
 
-You might expect this to move the row to the `invoice_paid` partition, but actually it fails with the above error. This is because, PostgreSQL expects that updates to a partitioning key will move it between *child* partitions, not *siblings*. The solution is to perform the update on the parent table:
+You might expect this to move the row to the `invoice_paid` partition, but actually it fails with the above error. This is because, PostgreSQL expects that updates to a partitioning key will move it between _child_ partitions, not _siblings_. The solution is to perform the update on the parent table:
 
 ```sql
 UPDATE invoice SET status='paid';
