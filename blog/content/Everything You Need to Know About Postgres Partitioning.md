@@ -158,7 +158,7 @@ This way you have a partition for created invoices, and two sets of partitions f
 
 ## Querying Partitioned Tables
 
-The main feature of partitioned tables is that they can be transparent to applications. That is to say that they can simply query the parent table (e.g. `invoice`) and everything will work just as expected if it were one large table. In addition to that, each partition is also queryable as they are just tables after all. This gives the advantage of directly querying the relevant data without extraneous WHERE clauses or index scanning (e.g. directly querying `invoice_created` for cancelled invoices).
+The main feature of partitioned tables is that they can be transparent to applications. That is to say that they can simply query the parent table (e.g. `invoice`) and everything will work just as expected if it were one large table. In addition to that, each partition is also queryable as they are just tables after all. This gives the advantage of directly querying the relevant data without extraneous WHERE clauses or index scanning (e.g. directly querying `invoice_cancelled` for cancelled invoices).
 
 Let's go a bit deeper and explore some key concepts and features.
 
@@ -371,13 +371,13 @@ INSERT INTO invoice (created_at) VALUES (NOW());
 This often occurs when an update to the partitioning key is attempted against a partition directly. For example, if the `status` column is a list type partitioning key:
 
 ```sql
-UPDATE invoice_created SET status='paid';
+UPDATE invoice_created SET status='paid' WHERE uuid='d9ecdfbd-528d-4b3c-88d4-b4a6cec28772';
 ```
 
 You might expect this to move the row to the `invoice_paid` partition, but actually it fails with the above error. This is because, PostgreSQL expects that updates to a partitioning key will move it between _child_ partitions, not _siblings_. The solution is to perform the update on the parent table:
 
 ```sql
-UPDATE invoice SET status='paid';
+UPDATE invoice SET status='paid' WHERE uuid='d9ecdfbd-528d-4b3c-88d4-b4a6cec28772';
 ```
 
 This will successfully update the partitioning key and move the row to the other partition.
@@ -414,7 +414,7 @@ Be very careful writing your check constraint as at this point the default parti
 
 Once you've bought yourself time with enough future partitions, you can work on migrating data out of the default partition into appropriate partitions of their own. You might do this by copying data into new tables and adding them as partitions individually, or by waiting long enough that you can safely and comfortably delete the data by truncating the default partition.
 
-I could go into a lot more detail, but this section is a big long winded already and I think I should move on, emotionally.
+I could go into a lot more detail, but this section is a bit long winded already and I think I should move on, emotionally.
 
 ## Monitoring and Observability
 
