@@ -416,6 +416,28 @@ Once you've bought yourself time with enough future partitions, you can work on 
 
 I could go into a lot more detail, but this section is a bit long winded already and I think I should move on, emotionally.
 
+## Best Practices
+
+### Choose the Right Partitioning Key
+
+It's important to choose a partitioning key that is as immutable as possible. A `created_at` column is a great choice. It's never changed, so it won't cause the row to move to different partitions. And it's set to "now", making it easier to write automation to ensure there's always a valid partition.
+
+For list based partitioning, it's often convenient to use a mutable key (such as `invoice.status` used as an example in this article), and that's a trade-off you'll need to be aware of and to accommodate for in your application code. Still try to use an immutable column for list type partitioning as well, if possible.
+
+### Keep Partitions Small
+
+The primary benefit of partitioning is that data is split into smaller manageable tables. Managing a partitioned table where the partitions are still big bloated monsters will add more complexity than it's worth. So, consider daily or even hourly partitions instead of monthly, for example.
+
+### Be Pragmatic When Deciding if You Really Need Partitioning
+
+Make sure there are clear benefits to partitioning a table, don't partition things just because you read on some blog that it's good for performance. If your data is suitably performant and there's no foreseeable need for partitioning, then it's not necessary and will only add more of a maintenance burden for you and your team.
+
+### Automate Partition Management and Monitor it Effectively
+
+For range based partitioning, it's crucial to ensure new partitions are reliably added and old ones pruned to ensure partitioning continues to operate and provide its benefits. If partitions stop being created, then you're often left in a situation that's worse than not having partitioning at all such as failing queries, degraded performance and difficult migration tasks for data in default partitions.
+
+So set up strong reliable automation and monitoring with alerts that will be acted upon. I've found that clear documentation such as runbooks help empower engineers to understand the issue and know what to do on the spot.
+
 ## Monitoring and Observability
 
 You won't be surprised that I recommend close monitoring of rows in default partitions. Any insertion of rows to default partitions should be handled as fast as possible to avoid it growing out of hand.
