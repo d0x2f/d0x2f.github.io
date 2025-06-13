@@ -39,7 +39,10 @@
 {% block content %}
 <div class="post">
   <h1 class="title">{{ page.title }}</h1>
-  <span class="date">{{ page.date | date(format="%-d %b %Y") }}</span>
+  <div class="metadata">
+    <span class="author">By {{ page.extra.author }}</span>
+    <span class="date">{{ page.date | date(format="%-d %b %Y") }}</span>
+  </div>
 
   {% if page.extra.images %}
   <div class="imageHero">

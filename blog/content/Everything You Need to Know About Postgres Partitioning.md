@@ -120,7 +120,7 @@ The number of partitions is fixed, if you want to change it, you need to manuall
 
 ### Combinations
 
-You can also partition a partition for multi-level structures. For example, here's an invoice partitioned table using both range and list styles of partitioning.
+You can also partition a partition for multi-level structures. For example, here's an invoice partitioned table using both range and list partitioning types.
 
 ```sql
 CREATE TYPE invoice_status AS ENUM ('created', 'paid', 'cancelled');
