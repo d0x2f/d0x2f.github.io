@@ -25,11 +25,21 @@ alt = "Location history heatmap example of Japan"
 
 ## Google Takeout Is No Longer an Option
 
-The tool I used to use to generate a heatmap from my Google Location History data has stopped working due to the recent data migration that moved location history to local storage. In fact, most existing tools were written to process timeline data exported using Google takeout, from which location data is no longer available.
+The tool I used to use to generate a heatmap from my Google Location
+History data has stopped working due to the recent data migration that
+moved location history to local storage. In fact, most existing tools
+were written to process timeline data exported using Google takeout,
+from which location data is no longer available.
 
-I've written a <a href="generator.html" target="_blank">quick and dirty tool</a> to generate a heatmap based on the location data exported from your phone. You can use that tool directly if you like, it processes everything client-side and you can verify the [source code on github](https://github.com/d0x2f/d0x2f.github.io/blob/main/blog/static/generating-a-heatmap-from-google-location-history/generator.html).
+I've written a <a href="generator.html" target="_blank">quick and dirty
+tool</a> to generate a heatmap based on the location data exported from
+your phone. You can use that tool directly if you like, it processes
+everything client-side and you can verify the [source code on
+github](https://github.com/d0x2f/d0x2f.github.io/blob/main/blog/static/generating-a-heatmap-from-google-location-history/generator.html).
 
-If you're hyper privacy conscious, then I've included a minimal version later in the article that you can code up and run yourself with a bit of setup.
+If you're hyper privacy conscious, then I've included a minimal version
+later in the article that you can code up and run yourself with a bit
+of setup.
 
 ## Exporting Your Location History
 
@@ -51,13 +61,17 @@ For iPhone (I'm reliably informed):
 
 ## Generate a Heatmap with Google Maps API
 
-To visualise your data, you’ll need a **Google Maps API key**, which requires a Google Cloud account with billing set up.
+To visualise your data, you’ll need a **Google Maps API key**, which
+requires a Google Cloud account with billing set up.
 
-I won’t go into the setup here, but you can follow the official [Google Maps API key documentation](https://developers.google.com/maps/documentation/javascript/get-api-key).
+I won’t go into the setup here, but you can follow the official [Google
+Maps API key
+documentation](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
 ## A Minimal Heatmap Web App
 
-Let's create a simple web app that loads the Google Maps SDK, loads our location history file and generates a heatmap.
+Let's create a simple web app that loads the Google Maps SDK, loads our
+location history file and generates a heatmap.
 
 ```html
 <!DOCTYPE html>
@@ -200,4 +214,5 @@ Let's create a simple web app that loads the Google Maps SDK, loads our location
 </html>
 ```
 
-Simply save this in a new html file, update the Google location history API key variable and open it in your favourite browser.
+Simply save this in a new html file, update the Google location history
+API key variable and open it in your favourite browser.
