@@ -4,6 +4,7 @@
 @import 'imageHero';
 @import 'fonts';
 @import 'toc';
+@import 'gallery';
 
 body {
   color: $text-color;
@@ -142,3 +143,10 @@ h1, h2, h3, h4, h5 {
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
+.w100 {
+  width: 100%
+}
+
+.float-right {
+  float: right
+}

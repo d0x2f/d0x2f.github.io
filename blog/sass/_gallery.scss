@@ -1,0 +1,11 @@
+.gallery {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+}
+
+.gallery img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

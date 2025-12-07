@@ -23,18 +23,27 @@ and were not in the best condition.
 
 {{
   image(
+    path="the-vhs-project/box-of-tapes.jpg",
+    width=300,
+    height=400,
+    op="fit_height",
+    alt="A moving box of old tapes"
+  )
+}}
+
+{{
+  image(
     path="the-vhs-project/mouldy-tape.jpg",
     width=300,
     height=400,
-    op="fit",
+    op="fit_height",
     alt="A mouldy VHS tape"
   )
 }}
 
-I figured it would be easy enough
-to buy a cheap PC capture card and do a little digitisation project.
-But as someone who scores highly on the geek spectrum, I went a little
-deeper then strictly necessary...
+I figured it would be easy enough to buy a cheap PC capture card and do
+a little digitisation project. But as someone who scores highly on the
+geek spectrum, I went a little deeper than strictly necessary...
 
 For this article, I'll focus on capture of the VHS tapes. To capture
 Hi8 I'll need to find a player, most likely a camcorder, which I don't
@@ -61,8 +70,8 @@ The two camps are:
   a video file.
 
 Since my goal was mostly recreational, I just chose the method that
-looked the most fun. I don't think there's any arguing which of these
-involved the most fun.
+looked the most fun and I don't think there's any arguing which option
+that is.
 
 ## The Plan
 
@@ -106,18 +115,36 @@ So, the setup for using the MISRC requires a few pieces:
 
 ### MISRC
 
-<!-- #TODO: Image of the MISRC -->
+{{
+  image(
+    path="the-vhs-project/misrc.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The VCR DMR-ES35V"
+    class="w100"
+  )
+}}
 
 To get an MISRC, there are a couple of options. Depending on stock you
 can order a prefabricated one from [this ko-fi shop](https://ko-fi.com/s/a3abe4007e).
 Otherwise, you will need to order one fabricated and assembled to order
 from [PCBWay](https://www.pcbway.com/project/shareproject/MISRC_Multi_Input_Simultaneous_Raw_RF_Capture_Rev_1_0_998c1a4f.html),
 there's also [a guide](https://github.com/Stefan-Olt/MISRC/wiki/Fabrication)
-from the developers on how to make order.
+from the developers on how to make an order.
 
 ### Sipeed Tang Nano 20K
 
-<!-- #TODO: Image of the tang nano -->
+{{
+  image(
+    path="the-vhs-project/sipeed-tang-nano-20k.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The VCR DMR-ES35V"
+    class="w100"
+  )
+}}
 
 The Sipeed Tang Nano 20k FPGA board is widely available, you can simply
 [order one from Amazon](https://amzn.eu/d/hR9tBkv). If available,
@@ -132,7 +159,8 @@ Acquiring the adaptor board is similar to the MISRC, either buy one
 from [harrypm's ko-fi shop](https://ko-fi.com/s/617b72ab2c), or get one
 made using PCBWay. Going the PCBWay route is a little more complicated
 however as there's no shared project (at least not that I could find),
-you need to submit the [design files](https://github.com/Stefan-Olt/MISRC/tree/main/hardware-extra/fx3-tangnano20k-adapter)
+you need to submit the [design
+files](https://github.com/Stefan-Olt/MISRC/tree/main/hardware-extra/fx3-tangnano20k-adapter)
 for a custom job. Note that ordering from the ko-fi shop can take a
 very long time, for me it took over 2 months and this was the last
 piece to arrive.
@@ -151,32 +179,53 @@ brand or form factor you get.
 
 This part required some research. I have a Panasonic DMR-ES35VP, which
 is a VHS/DVD combo player & recorder. In order to find the appropriate
-test points I needed to tap, I had to scour it's [service manual](https://www.manualslib.com/manual/791994/Panasonic-Dmr-Es35vp.html#product-DMR-ES35VP). Based on advice from the
-[vhs-decode wiki](https://github.com/oyvindln/vhs-decode/wiki/Hardware-Installation-Guide#test-point-names)
+test points I needed to tap, I had to scour it's [service
+manual](https://www.manualslib.com/manual/791994/Panasonic-Dmr-Es35vp.html#product-DMR-ES35VP).
+Based on advice from the [vhs-decode
+wiki](https://github.com/oyvindln/vhs-decode/wiki/Hardware-Installation-Guide#test-point-names)
 I scanned the pages for something with a label like `ENV`, `VENV` or
-`VIDEO ENVELOPE`, as well as `AENV`, `AUDIO ENV`, `HIFI ENV` or
-`FM MIX` for the audio.
+`VIDEO ENVELOPE`, as well as `AENV`, `AUDIO ENV`, `HIFI ENV` or `FM
+MIX` for the audio.
 
-<!-- #TODO: Image of the VCR -->
+{{
+  image(
+    path="the-vhs-project/DMR-ES35V.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The VCR DMR-ES35V"
+    class="w100"
+  )
+}}
 
 It actually took a long time to find what I thought were the right test
 points, but I eventually spotted them to be `VIDEO ENV/TW3001` for
-video and `ENVE/TW4502` for audio. The labeling varies between brands,
-so make sure to read the service manual carefully to ensure you use the
-right ones. I actually used the wrong test point for audio when I first
-did the soldering, I went with the point labelled `FM MIX/TW4501` on
-the audio circuit, but this isn't what we want, if you read the manual
-closely you can see that that test point only carries a signal during
-recording. In the case of this VCR, there is a separate test point
-labelled `ENVE/TW4502` right next to `VIDEO ENVE/TW3001`, which the
-right one to tap.
+video and `ENVE/TW4502` for Hi-Fi audio. The labeling varies between
+brands, so make sure to read the service manual carefully to ensure you
+use the right ones. I actually used the wrong test point for audio when
+I first did the soldering, I went with the point labelled `FM
+MIX/TW4501` on the audio circuit, but this isn't what we want, if you
+read the manual closely you can see that that test point only carries a
+signal during recording. In the case of this VCR, there is a separate
+test point labelled `ENVE/TW4502` right next to `VIDEO ENVE/TW3001`,
+which the right one to tap.
 
 {{
+  gallery(images=[
+    "the-vhs-project/service-manual-audio-test-point-p65.png",
+    "the-vhs-project/service-manual-audio-test-point-p81.png",
+    "the-vhs-project/service-manual-video-test-point-p64.png",
+    "the-vhs-project/service-manual-video-test-point-p78.png",
+    "the-vhs-project/open-vcr.jpg"
+  ])
+}}
+
+<!-- {{
   image(
     path="the-vhs-project/service-manual-audio-test-point-p65.png",
     width=300,
     height=400,
-    op="fit",
+    op="fit_width",
     alt="Audio test point in service manual"
   )
 }}
@@ -186,7 +235,7 @@ right one to tap.
     path="the-vhs-project/service-manual-audio-test-point-p81.png",
     width=300,
     height=400,
-    op="fit",
+    op="fit_width",
     alt="Audio test point in service manual"
   )
 }}
@@ -196,7 +245,7 @@ right one to tap.
     path="the-vhs-project/service-manual-video-test-point-p64.png",
     width=300,
     height=400,
-    op="fit",
+    op="fit_width",
     alt="Video test point in service manual"
   )
 }}
@@ -206,19 +255,28 @@ right one to tap.
     path="the-vhs-project/service-manual-video-test-point-p78.png",
     width=300,
     height=400,
-    op="fit",
+    op="fit_width",
     alt="Video test point in service manual"
   )
 }}
 
-<!-- #TODO: Images of the test points in the service manual -->
+{{
+  image(
+    path="the-vhs-project/open-vcr.jpg",
+    width=300,
+    height=400,
+    op="fit_width",
+    alt="Opened VCR showing test point location"
+  )
+}} -->
 
 Once the test points were identified, it was time to do the soldering.
 Since the wires will be carrying very sensitive low power signals, it's
 important to ensure they are shielded. For this I used coax cabling
 with the outer sheath attached to ground. To find a ground pin, I used
 a multimeter in continuity mode to probe various test points in
-convenient places against the chassis.
+convenient places against the chassis. Turns out there's a very
+convenient ground wire right next to the test points.
 
 <!-- #TODO: Images of multimeter and ground point testing -->
 
@@ -237,17 +295,95 @@ mechanism. I added a drop of sewing machine oil into each of the gears
 I could find and cleaned the cylinder head carefully with some
 isopropyl alcohol (IPA) and a microfibre cloth. The advice I followed
 was to slightly wet the cloth with IPA then steadily hold it against
-the cylinder head while slowly using your finger to move the rotate the
-head around a few revolutions. The main idea is not to swipe the cloth
-perpendicular to the grooves, which might cause damage or snag and trap
-lint inside.
+the cylinder head while slowly using your finger to rotate the head
+around a few revolutions (without touching the surface). The main idea
+is not to swipe the cloth perpendicular to the grooves, which might
+cause damage or snag and trap lint inside.
 
 <!-- #TODO: Image holding the cloth against the cylinder head -->
+
+## A Note About Hi-Fi Audio
+
+I didn't know this going in and it cost me some time. Hi-Fi audio is a
+specific type of high quality audio recorded separately from the usual
+linear audio tracks. You can see how it's laid out on the tape in this
+diagram:
+
+{{
+  image(
+    path="the-vhs-project/tape-layout-diagram.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="Diagram showing physical data layout on VHS tape"
+    class="w100"
+  )
+}}
+
+Source: [Sam's VCR FAQ](https://www.repairfaq.org/sam/vcrfil.htm)
+
+It was a later addition to the VHS format, so not all tapes will have
+it. It's also common that home videos won't have this type of audio
+signal present. What this means is that the Hi-Fi audio tap point
+`ENVE/TW4502` only carries a signal for tapes that have it. For tapes
+that don't, you'll need to record the linear audio and join it to the
+video.
+
+<!-- TODO: Show how I did it -->
 
 ## Capturing a Signal
 
 With all the pieces assembled, I now tried to get it all working.
+Connecting everything together is straight forward and the software is
+very easy to use, although a little tricky to install.
+
+To make a capture use the `misrc_capture` utility:
+
+```sh
+misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -c aux.bin
+```
+
+What you want to see is a clean progress output without any notices
+about dropped clipped samples. Samples are clipped when they are too
+low or too high and it means that something is wrong with the capture.
+It could be that the amplification is too high or too low, it could
+also be that the zero adjust is set too far out of whack. At this point
+we're just trying to confirm that there is a signal, we can look into
+tuning it properly later. So if you continue getting clipped samples,
+try changing the amplification up or down using the dip switches on the
+MISRC board. You can also try tuning the zero adjust pot.
+
+Captures are very large, expect hundreds of gigabytes per tape!
 
 ## Turning it into a Video
+
+With the output from `misrc_capture`, you can decode each into video or
+audio.
+
+### Video Component
+
+Take the `video_rf.flac` files and run it through `vhs-decode` like so:
+
+```sh
+vhs-decode --debug --ire0_adjust --recheck_phase \
+  --frequency 40 --pal --threads 8 --tape_format vhs \
+  video_rf.flac video_decoded.tbc
+```
+
+This produces a decoded file ready to be processed into a conventional
+video file in an `mkv` container using the provided `tbc-video-export`
+tool:
+
+```sh
+tbc-video-export video_decoded.tbc
+```
+
+### Audio Component
+
+If your tape has Hi-Fi audio data, then you should of course prefer
+that over the linear audio. If not, then you need to mux the linear
+audio into the video.
+
+## Tuning the Signal Capture
 
 ## Results
