@@ -160,13 +160,16 @@ I scanned the pages for something with a label like `ENV`, `VENV` or
 <!-- #TODO: Image of the VCR -->
 
 It actually took a long time to find what I thought were the right test
-points, but I eventually spotted them to be `TW3001` for video and
-`TW4502` for audio. The labeling varies between brands, so make sure to
-read the service manual carefully to ensure you use the right ones.
-I actually used the wrong test point for audio when I first did the
-soldering, I went with the point labelled `ENVE` on the audio circuit,
-but this isn't what we want. In the case of this VCR, there is a
-separate test point labelled `FM MIX`, which the right one to tap.
+points, but I eventually spotted them to be `VIDEO ENV/TW3001` for
+video and `ENVE/TW4502` for audio. The labeling varies between brands,
+so make sure to read the service manual carefully to ensure you use the
+right ones. I actually used the wrong test point for audio when I first
+did the soldering, I went with the point labelled `FM MIX/TW4501` on
+the audio circuit, but this isn't what we want, if you read the manual
+closely you can see that that test point only carries a signal during
+recording. In the case of this VCR, there is a separate test point
+labelled `ENVE/TW4502` right next to `VIDEO ENVE/TW3001`, which the
+right one to tap.
 
 {{
   image(
