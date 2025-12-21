@@ -1,0 +1,12 @@
+figure {
+  display: inline flex;
+  flex-flow: column;
+  margin: 0;
+}
+
+figcaption {
+  color: white;
+  font: italic smaller sans-serif;
+  padding: 3px;
+  text-align: center;
+}

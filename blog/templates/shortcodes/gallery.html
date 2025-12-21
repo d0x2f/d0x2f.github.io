@@ -1,8 +1,8 @@
 <div class="gallery">
-  {% for image_path in images -%}
-  {% set image = resize_image(path=image_path, width=240, height=180) %}
-  <a href="{{ get_url(path=image_path) }}" target="_blank">
-    <img src="{{ image.url }}" />
-  </a>
-  {%- endfor %}
+  <div class="images">
+    {{ body | safe }}
+  </div>
+  {% if caption %}
+  <p class="caption">{{ caption }}</p>
+  {% endif %}
 </div>

@@ -1,0 +1,6 @@
+<figure {% if class %}class="{{ class }}" {% endif %}>
+  <video loop autoplay height="{{ height }}">
+    <source src="/{{ path }}" type="video/webm" />
+  </video>
+  {% if caption %}<figcaption>{{ caption | markdown | safe }}</figcaption>{% endif %}
+</figure>

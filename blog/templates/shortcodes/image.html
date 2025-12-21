@@ -1,2 +1,10 @@
+{% if not op %}
+{% set op = "fill" %}
+{% endif %}
 {% set image = resize_image(path=path, width=width, height=height, op=op, format="webp") %}
-<img {% if class %}class="{{ class }}" {% endif %} src="{{ image.url }}" alt="{{ alt }}" />
+<figure {% if class %}class="{{ class }}" {% endif %}>
+  <a href="{{ get_url(path=path) }}" target="_blank">
+    <img src="{{ image.url }}" alt="{{ alt }}" />
+  </a>
+  {% if caption %}<figcaption>{{ caption | markdown | safe }}</figcaption>{% endif %}
+</figure>

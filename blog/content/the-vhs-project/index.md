@@ -14,12 +14,11 @@ author = "Dylan McGannon"
 x_handle = "@D0x2f"
 +++
 
-## The Goal
+## The Situation
 
-When my wife's family brought out the old family home videos, I wasn't
-expecting a moving box stacked with VHS and Hi8 tapes literally rotting
-away in the garden shed. They had been shot around 20 to 35 years ago
-and were not in the best condition.
+I've come into possession of a box of old VHS and Hi8 tapes containing
+childhood home videos. They had been shot around 20 to 35 years ago and
+were not in the best condition.
 
 {{
   image(
@@ -51,21 +50,14 @@ have just yet.
 
 ## Investigation
 
-Looking into the options available, I entered the confusing,
-complicated and strange world of tape digitisation. There are generally
-two competing methods that are surprisingly tribal and combative, at
-least a few specific individuals love to trash the opposing method as
-if it was an invention of Satan himself. This sorry situation floods
-the web with misinformation and heavily opinionated takes that makes it
-difficult to understand the real trade-offs.
-
-The two camps are:
+I discovered that there are generally two methods commonly used for
+digitisation, they are:
 
 - Gathering a bunch of hardware like a "time based corrector" (TBC) and
   a chain of such things like up-scalers, converters and a capture
   card. Connecting them together and recording the result.
 - Opening a VCR, finding where I can tap the raw RF signal from the
-  tape head, route it through an amplifier and an RF capture device
+  tape head, route it through an amplifier, ADC and a capture device
   straight to my PC, then using software to decode the raw signal into
   a video file.
 
@@ -78,8 +70,7 @@ that is.
 The raw RF capture method is documented on the [oyvindln/vhs-decode
 GitHub wiki](https://github.com/oyvindln/vhs-decode/wiki), which
 deserves immense praise for making quite a technical endeavour much
-more accessible for those that only dabble in hardware matters like
-myself.
+more accessible.
 
 After a thorough reading of the wiki, I understood that I broadly
 needed to accomplish the following:
@@ -91,11 +82,37 @@ needed to accomplish the following:
 
 Before I did any of this though, I went ahead and did a first pass
 capture using a cheap USB composite video capture dongle. That's simple
-enough so I won't go over how to do that in this post. The only thing
-you need to get right is the capture settings in terms of interlacing,
+enough so I won't go over how to do that here. The only thing you need
+to get right is the capture settings in terms of interlacing,
 framerate, resolution and such.
 
-## Buying the Right Circuit Boards
+## A Note About Hi-Fi Audio
+
+I didn't know this going in and it cost me some time. Hi-Fi audio is a
+specific type of high quality audio recorded separately from the usual
+linear audio tracks. You can see how it's laid out on the tape in this
+diagram:
+
+{{
+  image(
+    path="the-vhs-project/tape-layout-diagram.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="Diagram showing physical data layout on VHS tape"
+    class="w100",
+    caption="Source: [Sam's VCR FAQ](https://www.repairfaq.org/sam/vcrfil.htm)"
+  )
+}}
+
+It was a later addition to the VHS format, so not all tapes will have
+it. It's also common that home videos won't have this type of audio
+signal present. What this means is that the Hi-Fi audio tap point
+`ENVE/TW4502` only carries a signal for tapes that have it. For tapes
+that don't, you'll need to record the linear audio and join it to the
+video, which I will be doing in this post.
+
+## Choosing a Capture Workflow
 
 There are many choices to make here regarding which hardware to use.
 I settled on the
@@ -112,6 +129,7 @@ So, the setup for using the MISRC requires a few pieces:
 - [An adaptor](https://ko-fi.com/s/617b72ab2c) to connect the Tang Nano
   to the MISRC board.
 - An MS2130 HDMI-USBC adaptor.
+- A [PCM1802 breakout board](https://www.aliexpress.com/item/1005006291500494.html) for baseband audio capture
 
 ### MISRC
 
@@ -169,11 +187,31 @@ piece to arrive.
 
 <!-- #TODO: Image of the MS2130 dongle -->
 
-Finally, the MS2130 HDMI-USBC dongle is a simple purchase available in
-many forms [on Amazon](https://amzn.eu/d/dzeXYY6). The `MS2130` name
-refers to the specific IC chip which is used in many different capture
-dongles of different brands. As far as I know it doesn't matter which
-brand or form factor you get.
+The MS2130 HDMI-USBC dongle is a simple purchase available in many
+forms [on Amazon](https://amzn.eu/d/dzeXYY6). The `MS2130` name refers
+to the specific IC chip which is used in many different capture dongles
+of different brands. As far as I know it doesn't matter which brand or
+form factor you get. The reason for this specific IC is that it's used
+by the [HSDAOH project](https://github.com/steve-m/hsdaoh) as a cheap
+way to transfer a lot of data over USB.
+
+### PCM1802 Breakout Board
+
+<!-- #TODO: Image of the PCM1802 board -->
+
+Whether you need to go through the trouble of wiring in an audio ADC
+like this depends on if you want/need to capture the linear audio on
+your tapes. Potentially you're happy with only capturing the HiFi audio
+which is of higher quality anyway. For me, my tapes didn't have HiFi
+audio content and the sound was only present as linear baseband audio,
+making it essential to capture.
+
+For the version of the MISRC board available to me at the time of
+writing (v1.5a), in order to capture baseband audio, you need to supply
+a PCM stream to the AUX pins. Newer versions of the MISRC will support
+this on-board instead of requiring a separate addon, so check the
+documentation for the MISRC version you have to decide if you need need
+it.
 
 ## Soldering Wires to my VCR
 
@@ -208,24 +246,14 @@ MIX/TW4501` on the audio circuit, but this isn't what we want, if you
 read the manual closely you can see that that test point only carries a
 signal during recording. In the case of this VCR, there is a separate
 test point labelled `ENVE/TW4502` right next to `VIDEO ENVE/TW3001`,
-which the right one to tap.
+which is the right one to tap.
 
+{% gallery() %}
 {{
-  gallery(images=[
-    "the-vhs-project/service-manual-audio-test-point-p65.png",
-    "the-vhs-project/service-manual-audio-test-point-p81.png",
-    "the-vhs-project/service-manual-video-test-point-p64.png",
-    "the-vhs-project/service-manual-video-test-point-p78.png",
-    "the-vhs-project/open-vcr.jpg"
-  ])
-}}
-
-<!-- {{
   image(
     path="the-vhs-project/service-manual-audio-test-point-p65.png",
-    width=300,
-    height=400,
-    op="fit_width",
+    width=240,
+    height=180,
     alt="Audio test point in service manual"
   )
 }}
@@ -233,9 +261,8 @@ which the right one to tap.
 {{
   image(
     path="the-vhs-project/service-manual-audio-test-point-p81.png",
-    width=300,
-    height=400,
-    op="fit_width",
+    width=240,
+    height=180,
     alt="Audio test point in service manual"
   )
 }}
@@ -243,9 +270,8 @@ which the right one to tap.
 {{
   image(
     path="the-vhs-project/service-manual-video-test-point-p64.png",
-    width=300,
-    height=400,
-    op="fit_width",
+    width=240,
+    height=180,
     alt="Video test point in service manual"
   )
 }}
@@ -253,9 +279,8 @@ which the right one to tap.
 {{
   image(
     path="the-vhs-project/service-manual-video-test-point-p78.png",
-    width=300,
-    height=400,
-    op="fit_width",
+    width=240,
+    height=180,
     alt="Video test point in service manual"
   )
 }}
@@ -263,12 +288,12 @@ which the right one to tap.
 {{
   image(
     path="the-vhs-project/open-vcr.jpg",
-    width=300,
-    height=400,
-    op="fit_width",
+    width=240,
+    height=180,
     alt="Opened VCR showing test point location"
   )
-}} -->
+}}
+{% end %}
 
 Once the test points were identified, it was time to do the soldering.
 Since the wires will be carrying very sensitive low power signals, it's
@@ -280,16 +305,43 @@ convenient ground wire right next to the test points.
 
 <!-- #TODO: Images of multimeter and ground point testing -->
 
-<!-- #TODO: Images of test points before and after solder -->
+{% gallery(caption="I know my soldering sucks, I don't want to hear about it.") %}
+{{
+  image(
+    path="the-vhs-project/ENVE-solder.jpg",
+    width=240,
+    height=180,
+    alt="Soldered ENVE test point tap for HiFi audio"
+  )
+}}
+{{
+  image(
+    path="the-vhs-project/VIDEO-ENVE-solder.jpg",
+    width=240,
+    height=180,
+    alt="Soldered VIDEO ENVE test point tap for video"
+  )
+}}
+{% end %}
 
 I initially intended to make a hole in the VCR chassis and mount a BNC
 connector, but the chassis is metal and I don't have the appropriate
 tools, so I ended up just routing the wires our the side vents and
 terminating with the BNC connector.
 
-<!-- #TODO: Image of BNC connectors routed externally -->
+{{
+  image(
+    path="the-vhs-project/vcr-external-bnc.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The VCR DMR-ES35V with externally routed BNC connectors for the taps"
+    class="w100",
+    caption="Not going for style..."
+  )
+}}
 
-With this, the VCR was done and ready to be closed. But while I'm
+At this point, the VCR was done and ready to be closed. But while I'm
 here... I may as well do some cleaning and lubing of the tape
 mechanism. I added a drop of sewing machine oil into each of the gears
 I could find and cleaned the cylinder head carefully with some
@@ -300,36 +352,48 @@ around a few revolutions (without touching the surface). The main idea
 is not to swipe the cloth perpendicular to the grooves, which might
 cause damage or snag and trap lint inside.
 
-<!-- #TODO: Image holding the cloth against the cylinder head -->
+## Tape Cleaning
 
-## A Note About Hi-Fi Audio
+Before capturing from my mouldy tapes, I wanted to clean them. I tried
+a method where you let it run through the VCR in fast-forward while
+holding a lightly IPA wet lint-free cloth against the tape. I really
+didn't like this as it was awkward to hold the cloth properly and my
+VCR was very sensitive to ambient light with the lid off. It also
+didn't clean the insides of the cassette where there is bound to be
+more mould.
 
-I didn't know this going in and it cost me some time. Hi-Fi audio is a
-specific type of high quality audio recorded separately from the usual
-linear audio tracks. You can see how it's laid out on the tape in this
-diagram:
+So I went looking for an off-the-shelf VHS tape cleaner and found [this
+VHS mould cleaner from VHS is
+Life](https://vhsislife.com/got-mold-lets-fix-it-with-the-vhs-is-life-mold-cleaner/).
 
+It did a phenomenal job cleaning my tapes.
+
+{% gallery(caption="The journey of a mouldy tape.") %}
 {{
   image(
-    path="the-vhs-project/tape-layout-diagram.jpg",
-    width=800,
-    height=800,
-    op="fit",
-    alt="Diagram showing physical data layout on VHS tape"
-    class="w100"
+    path="the-vhs-project/tape-mouldy.jpg",
+    width=240,
+    height=180,
+    alt="A mouldy tape reel"
   )
 }}
-
-Source: [Sam's VCR FAQ](https://www.repairfaq.org/sam/vcrfil.htm)
-
-It was a later addition to the VHS format, so not all tapes will have
-it. It's also common that home videos won't have this type of audio
-signal present. What this means is that the Hi-Fi audio tap point
-`ENVE/TW4502` only carries a signal for tapes that have it. For tapes
-that don't, you'll need to record the linear audio and join it to the
-video.
-
-<!-- TODO: Show how I did it -->
+{{
+  video(
+    path="the-vhs-project/tape-cleaning.webm",
+    width=320,
+    height=180,
+    alt="A tape being cleaned"
+  )
+}}
+{{
+  image(
+    path="the-vhs-project/tape-cleaned.jpg",
+    width=240,
+    height=180,
+    alt="A cleaned tape reel"
+  )
+}}
+{% end %}
 
 ## Capturing a Signal
 
@@ -340,18 +404,29 @@ very easy to use, although a little tricky to install.
 To make a capture use the `misrc_capture` utility:
 
 ```sh
-misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -c aux.bin
+misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -x aux.bin
 ```
 
 What you want to see is a clean progress output without any notices
-about dropped clipped samples. Samples are clipped when they are too
-low or too high and it means that something is wrong with the capture.
-It could be that the amplification is too high or too low, it could
-also be that the zero adjust is set too far out of whack. At this point
-we're just trying to confirm that there is a signal, we can look into
-tuning it properly later. So if you continue getting clipped samples,
-try changing the amplification up or down using the dip switches on the
-MISRC board. You can also try tuning the zero adjust pot.
+about clipped samples being dropped. Samples are clipped when they are
+too low or too high and it means that something is wrong with the
+capture.
+
+You have a few settings to tweak on the MISRC via the dip switches. I
+am not knowledgeable in this domain, but I've figured it out to a
+degree I'm happy with for myself, so don't fully trust what I have to
+say.
+
+think of the RF signal you're trying to capture as a wave-form centred
+on some voltage.
+
+It could be that the amplification is too high or low, it
+could also be that the zero adjust is set too far out of whack. At this
+point we're just trying to confirm that there is a signal, we can look
+into tuning it properly later. So if you continue getting clipped
+samples, try changing the amplification up or down using the dip
+switches on the MISRC board. You can also try tuning the zero adjust
+pot.
 
 Captures are very large, expect hundreds of gigabytes per tape!
 
