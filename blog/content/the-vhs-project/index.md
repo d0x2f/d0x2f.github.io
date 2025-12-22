@@ -1,12 +1,13 @@
 +++
-title = "The VHS Project"
-description = "My journey digitising old family home videos from VHS and Hi8 tapes."
-date = "2025-11-20"
+title = "The VHS Project (Unpublished, Work in Progress)"
+description = "My journey digitising old family home videos from VHS tapes."
+date = "2025-12-22"
 
 [taxonomies]
 tags = [
   "VHS", "hardware", "vhsdecode", "software",
-  "panasonic", "DMR-ES35VP", "circuit", "PCB Way"
+  "panasonic", "DMR-ES35V", "circuit", "PCB Way",
+  "misrc", "pcm1802", "mould", "vhs-is-life"
 ]
 
 [extra]
@@ -388,26 +389,26 @@ It did a phenomenal job cleaning my tapes.
 {{
   image(
     path="the-vhs-project/tape-mouldy.jpg",
-    width=240,
-    height=180,
+    width=340,
+    height=250,
     alt="A mouldy tape reel"
   )
 }}
 {{
   image(
     path="the-vhs-project/tape-cleaned.jpg",
-    width=240,
-    height=180,
+    width=340,
+    height=250,
     alt="A cleaned tape reel"
   )
 }}
 {% end %}
-
 {{
   video(
     path="the-vhs-project/tape-cleaning.webm",
     alt="A tape being cleaned",
-    caption="The cleaner in action."
+    caption="The cleaner in action.",
+    class="w50 block mx-auto"
   )
 }}
 
@@ -435,19 +436,46 @@ say.
 
 Think of the RF signal you're trying to capture as a wave-form centred
 on some voltage. The MISRC can be configured to capture a signal within
-either ±1V or ±2V. You want to ensure the full signal fits inside
+either 0-1V or 0-2V. You want to ensure the full signal fits inside
 either of these ranges and that the signal covers as much of the range
-as possible. This allows the ADC to digitise the signal with as much
-resolution as it can support.
-
-<!-- #TODO: Show a waveform diagram with annotations about clipping,
-coupling, zero bias. dc offset etc. .-->
+as possible. This allows the ADC to digitise the interesting parts of
+the signal using all the resolution it supports.
 
 Once you're confident that you have the signal nicely centred in the
 capture range, increase the amplifier gain incrementally until you see
 some clipping, then take it back one step. It's not easy to do all this
 without the right tools like an oscilloscope, but hopefully this
 conveys the idea.
+
+{% gallery() %}
+{{
+  image(
+    path="the-vhs-project/signal-with-dc-offset.png",
+    width=240,
+    height=180,
+    alt="Signal with a DC offset resulting in clipping",
+    caption="A DC offset with clipping"
+  )
+}}
+{{
+  image(
+    path="the-vhs-project/signal-centred.png",
+    width=240,
+    height=180,
+    alt="Signal centred properly",
+    caption="Centred properly"
+  )
+}}
+{{
+  image(
+    path="the-vhs-project/signal-amplified.png",
+    width=240,
+    height=180,
+    alt="A signal centred and amplified to use the full ADC input range",
+    caption="Amplified to use the full range"
+  )
+}}
+{% end %}
 
 Captures are very large, expect hundreds of gigabytes per tape!
 
@@ -474,6 +502,10 @@ analyze the `video_decoded.tbc` file with the `ld-analyze` tool to
 inspect each frame. It has lots of useful visualisations to help tune
 your pipeline. Of note is the black SNR chart which will tell you
 roughly how clean your signal is.
+
+You can tweak the black/white levels with `ld-analyze` to improve the
+picture, make sure to save the changes you make so that they take
+effect when you export the combined video later.
 
 ### HiFi Audio Component
 
