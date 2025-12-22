@@ -1,11 +1,11 @@
-.gallery .images {
+.gallery .figures {
   display: flex;
   justify-content: center;
   width: 100%;
   gap: 4px;
 }
 
-.gallery .images img {
+.gallery .figures img, .gallery .figures video {
   max-width: 100%;
   height: auto;
   display: block;

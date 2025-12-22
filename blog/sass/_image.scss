@@ -4,6 +4,10 @@ figure {
   margin: 0;
 }
 
+figure * {
+  width: 100%;
+}
+
 figcaption {
   color: white;
   font: italic smaller sans-serif;

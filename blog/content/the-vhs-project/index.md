@@ -20,12 +20,13 @@ I've come into possession of a box of old VHS and Hi8 tapes containing
 childhood home videos. They had been shot around 20 to 35 years ago and
 were not in the best condition.
 
+{% gallery() %}
 {{
   image(
     path="the-vhs-project/box-of-tapes.jpg",
     width=300,
-    height=400,
-    op="fit_height",
+    height=200,
+    op="fill",
     alt="A moving box of old tapes"
   )
 }}
@@ -34,11 +35,12 @@ were not in the best condition.
   image(
     path="the-vhs-project/mouldy-tape.jpg",
     width=300,
-    height=400,
-    op="fit_height",
+    height=200,
+    op="fill",
     alt="A mouldy VHS tape"
   )
 }}
+{% end %}
 
 I figured it would be easy enough to buy a cheap PC capture card and do
 a little digitisation project. But as someone who scores highly on the
@@ -352,6 +354,20 @@ around a few revolutions (without touching the surface). The main idea
 is not to swipe the cloth perpendicular to the grooves, which might
 cause damage or snag and trap lint inside.
 
+## Shielding
+
+To give your signal the best chance, you need to consider end to end
+shielding and EMI (electromagnetic interference) protection.
+
+{{
+  image(
+    path="the-vhs-project/shielded-box.jpg",
+    width=400,
+    height=250,
+    alt="The MISRC housed in project box shielded with copper tape."
+  )
+}}
+
 ## Tape Cleaning
 
 Before capturing from my mouldy tapes, I wanted to clean them. I tried
@@ -368,21 +384,13 @@ Life](https://vhsislife.com/got-mold-lets-fix-it-with-the-vhs-is-life-mold-clean
 
 It did a phenomenal job cleaning my tapes.
 
-{% gallery(caption="The journey of a mouldy tape.") %}
+{% gallery(caption="Before an after cleaning.") %}
 {{
   image(
     path="the-vhs-project/tape-mouldy.jpg",
     width=240,
     height=180,
     alt="A mouldy tape reel"
-  )
-}}
-{{
-  video(
-    path="the-vhs-project/tape-cleaning.webm",
-    width=320,
-    height=180,
-    alt="A tape being cleaned"
   )
 }}
 {{
@@ -395,6 +403,14 @@ It did a phenomenal job cleaning my tapes.
 }}
 {% end %}
 
+{{
+  video(
+    path="the-vhs-project/tape-cleaning.webm",
+    alt="A tape being cleaned",
+    caption="The cleaner in action."
+  )
+}}
+
 ## Capturing a Signal
 
 With all the pieces assembled, I now tried to get it all working.
@@ -404,7 +420,7 @@ very easy to use, although a little tricky to install.
 To make a capture use the `misrc_capture` utility:
 
 ```sh
-misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -x aux.bin
+misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -x linear_pcm.bin
 ```
 
 What you want to see is a clean progress output without any notices
@@ -417,27 +433,34 @@ am not knowledgeable in this domain, but I've figured it out to a
 degree I'm happy with for myself, so don't fully trust what I have to
 say.
 
-think of the RF signal you're trying to capture as a wave-form centred
-on some voltage.
+Think of the RF signal you're trying to capture as a wave-form centred
+on some voltage. The MISRC can be configured to capture a signal within
+either ±1V or ±2V. You want to ensure the full signal fits inside
+either of these ranges and that the signal covers as much of the range
+as possible. This allows the ADC to digitise the signal with as much
+resolution as it can support.
 
-It could be that the amplification is too high or low, it
-could also be that the zero adjust is set too far out of whack. At this
-point we're just trying to confirm that there is a signal, we can look
-into tuning it properly later. So if you continue getting clipped
-samples, try changing the amplification up or down using the dip
-switches on the MISRC board. You can also try tuning the zero adjust
-pot.
+<!-- #TODO: Show a waveform diagram with annotations about clipping,
+coupling, zero bias. dc offset etc. .-->
+
+Once you're confident that you have the signal nicely centred in the
+capture range, increase the amplifier gain incrementally until you see
+some clipping, then take it back one step. It's not easy to do all this
+without the right tools like an oscilloscope, but hopefully this
+conveys the idea.
 
 Captures are very large, expect hundreds of gigabytes per tape!
 
 ## Turning it into a Video
 
-With the output from `misrc_capture`, you can decode each into video or
-audio.
+The `misrc_capture` command will have output three files
+`video_rf.flac`, `hifi_rf.flac` and `linear_pcm.bin`. We can decode
+each of these and combine them into a single video file.
 
 ### Video Component
 
-Take the `video_rf.flac` files and run it through `vhs-decode` like so:
+Take the `video_rf.flac` files and run it through `vhs-decode` like so
+(set NTSC/PAL as appropriate):
 
 ```sh
 vhs-decode --debug --ire0_adjust --recheck_phase \
@@ -445,19 +468,22 @@ vhs-decode --debug --ire0_adjust --recheck_phase \
   video_rf.flac video_decoded.tbc
 ```
 
-This produces a decoded file ready to be processed into a conventional
-video file in an `mkv` container using the provided `tbc-video-export`
-tool:
+This produces a decoded `video_decoded.tbc` file which we can use to
+create the video once we have the audio components decoded. You can
+analyze the `video_decoded.tbc` file with the `ld-analyze` tool to
+inspect each frame. It has lots of useful visualisations to help tune
+your pipeline. Of note is the black SNR chart which will tell you
+roughly how clean your signal is.
+
+### HiFi Audio Component
+
+### Linear Audio Component
+
+### Muxing it together
 
 ```sh
 tbc-video-export video_decoded.tbc
 ```
-
-### Audio Component
-
-If your tape has Hi-Fi audio data, then you should of course prefer
-that over the linear audio. If not, then you need to mux the linear
-audio into the video.
 
 ## Tuning the Signal Capture
 
