@@ -89,6 +89,11 @@ enough so I won't go over how to do that here. The only thing you need
 to get right is the capture settings in terms of interlacing,
 framerate, resolution and such.
 
+I did this so that I'd have a baseline version to compare with after I
+went through all the trouble of this raw RF capture method. I was also
+concerned I might ruin some of the tapes in the process and a low
+quality capture is better than nothing.
+
 ## A Note About Hi-Fi Audio
 
 I didn't know this going in and it cost me some time. Hi-Fi audio is a
@@ -132,7 +137,9 @@ So, the setup for using the MISRC requires a few pieces:
 - [An adaptor](https://ko-fi.com/s/617b72ab2c) to connect the Tang Nano
   to the MISRC board.
 - An MS2130 HDMI-USBC adaptor.
-- A [PCM1802 breakout board](https://www.aliexpress.com/item/1005006291500494.html) for baseband audio capture
+- A [PCM1802 breakout
+  board](https://www.aliexpress.com/item/1005006291500494.html) for
+  baseband audio capture
 
 ### MISRC
 
@@ -306,8 +313,6 @@ a multimeter in continuity mode to probe various test points in
 convenient places against the chassis. Turns out there's a very
 convenient ground wire right next to the test points.
 
-<!-- #TODO: Images of multimeter and ground point testing -->
-
 {% gallery(caption="I know my soldering sucks, I don't want to hear about it.") %}
 {{
   image(
@@ -358,13 +363,19 @@ cause damage or snag and trap lint inside.
 ## Shielding
 
 To give your signal the best chance, you need to consider end to end
-shielding and EMI (electromagnetic interference) protection.
+shielding and EMI (electro-magnetic interference) protection. I decided
+to house the MISRC in a plastic project box with the inside lined with
+copper tape. Make sure to cover all the caps and ensure that there is a
+continuous electrical connection to every point. You also want to
+solder a ground wire from the MISRC ground pin to the chassis
+shielding.
 
 {{
   image(
     path="the-vhs-project/shielded-box.jpg",
-    width=400,
-    height=250,
+    width=600,
+    height=350,
+    class="w100",
     alt="The MISRC housed in project box shielded with copper tape."
   )
 }}
@@ -441,6 +452,11 @@ either of these ranges and that the signal covers as much of the range
 as possible. This allows the ADC to digitise the interesting parts of
 the signal using all the resolution it supports.
 
+To centre the signal, you can either enable AC coupling or use DC
+coupling and adjust the bias pots next to each BNC input. AC coupling
+effectively removes the DC component and centres the signal
+automatically in a way I don't fully understand 🤷‍♂️.
+
 Once you're confident that you have the signal nicely centred in the
 capture range, increase the amplifier gain incrementally until you see
 some clipping, then take it back one step. It's not easy to do all this
@@ -453,6 +469,7 @@ conveys the idea.
     path="the-vhs-project/signal-with-dc-offset.png",
     width=240,
     height=180,
+    class="w100",
     alt="Signal with a DC offset resulting in clipping",
     caption="A DC offset with clipping"
   )
@@ -462,6 +479,7 @@ conveys the idea.
     path="the-vhs-project/signal-centred.png",
     width=240,
     height=180,
+    class="w100",
     alt="Signal centred properly",
     caption="Centred properly"
   )
@@ -471,6 +489,7 @@ conveys the idea.
     path="the-vhs-project/signal-amplified.png",
     width=240,
     height=180,
+    class="w100",
     alt="A signal centred and amplified to use the full ADC input range",
     caption="Amplified to use the full range"
   )
