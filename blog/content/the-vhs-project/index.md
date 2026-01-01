@@ -18,8 +18,9 @@ x_handle = "@D0x2f"
 ## The Situation
 
 I've come into possession of a box of old VHS and Hi8 tapes containing
-childhood home videos. They had been shot around 20 to 35 years ago and
-were not in the best condition.
+childhood home videos. They had been filmed around 20 to 35 years ago
+and were not in the best condition. I think they're coming up on the
+end of their expected lifespan and are in urgent need for digitisation.
 
 {% gallery() %}
 {{
@@ -98,7 +99,7 @@ quality capture is better than nothing.
 
 I didn't know this going in and it cost me some time. Hi-Fi audio is a
 specific type of high quality audio recorded separately from the usual
-linear audio tracks. You can see how it's laid out on the tape in this
+baseband audio tracks. You can see how it's laid out on the tape in this
 diagram:
 
 {{
@@ -117,7 +118,7 @@ It was a later addition to the VHS format, so not all tapes will have
 it. It's also common that home videos won't have this type of audio
 signal present. What this means is that the Hi-Fi audio tap point
 `ENVE/TW4502` only carries a signal for tapes that have it. For tapes
-that don't, you'll need to record the linear audio and join it to the
+that don't, you'll need to record the baseband audio and join it to the
 video, which I will be doing in this post.
 
 ## Choosing a Capture Workflow
@@ -181,8 +182,6 @@ into the adaptor without any special mounting needed.
 
 ### MISRC <=> Tang Nano Adaptor Board
 
-<!-- #TODO: Image of the adaptor board -->
-
 Acquiring the adaptor board is similar to the MISRC, either buy one
 from [harrypm's ko-fi shop](https://ko-fi.com/s/617b72ab2c), or get one
 made using PCBWay. Going the PCBWay route is a little more complicated
@@ -194,8 +193,6 @@ very long time, for me it took over 2 months and this was the last
 piece to arrive.
 
 ### MS2130 HDMI-USBC Dongle
-
-<!-- #TODO: Image of the MS2130 dongle -->
 
 The MS2130 HDMI-USBC dongle is a simple purchase available in many
 forms [on Amazon](https://amzn.eu/d/dzeXYY6). The `MS2130` name refers
@@ -210,11 +207,11 @@ way to transfer a lot of data over USB.
 <!-- #TODO: Image of the PCM1802 board -->
 
 Whether you need to go through the trouble of wiring in an audio ADC
-like this depends on if you want/need to capture the linear audio on
+like this depends on if you want/need to capture the baseband audio on
 your tapes. Potentially you're happy with only capturing the HiFi audio
 which is of higher quality anyway. For me, my tapes didn't have HiFi
-audio content and the sound was only present as linear baseband audio,
-making it essential to capture.
+audio content and the sound was only present as baseband audio, making
+it essential to capture.
 
 For the version of the MISRC board available to me at the time of
 writing (v1.5a), in order to capture baseband audio, you need to supply
@@ -222,6 +219,26 @@ a PCM stream to the AUX pins. Newer versions of the MISRC will support
 this on-board instead of requiring a separate addon, so check the
 documentation for the MISRC version you have to decide if you need need
 it.
+
+Setting this up for baseband audio capture is not as straight forward
+as one would think. The idea is to input the RCA output from the VCR,
+the clock signal from the MISRC and then capture the PCM output stream
+via the MISRC AUX pins.
+
+The board has a number of pads on the back you can bridge to configure
+various things. For this project, I came to understand we want to
+bridge the `mode 0` pad, which sets master mode with with an audio
+sampling rate of the input clock speed (40 MHz) divided by 512, which
+in this case is 78125Hz. That's not a common audio sampling rate, but
+not to worry, it's supported by the IC and we can resample it later in
+software.
+
+There's a common defect on these boards (more than one actually...)
+that was also present in mine. The configuration pads on the back
+marked with `+`aren't connected to Vdd or to anything else. We need to
+connect it ourselves in order for the mode 0 bridge to take affect.
+
+<!-- #TODO: Picture of the bodges -->
 
 ## Soldering Wires to my VCR
 
@@ -363,12 +380,12 @@ cause damage or snag and trap lint inside.
 ## Shielding
 
 To give your signal the best chance, you need to consider end to end
-shielding and EMI (electro-magnetic interference) protection. I decided
-to house the MISRC in a plastic project box with the inside lined with
-copper tape. Make sure to cover all the caps and ensure that there is a
-continuous electrical connection to every point. You also want to
-solder a ground wire from the MISRC ground pin to the chassis
-shielding.
+shielding for EMI (electro-magnetic interference) protection. I decided
+to house the components in a plastic project box with the inside lined
+with copper tape. If you do the same, make sure to cover all the caps
+and to ensure that there's a continuous electrical connection to every
+point in the shielding. You'll also want to solder a ground wire from
+an MISRC ground pin to the chassis shielding (just one).
 
 {{
   image(
@@ -432,7 +449,7 @@ very easy to use, although a little tricky to install.
 To make a capture use the `misrc_capture` utility:
 
 ```sh
-misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -x linear_pcm.bin
+misrc_capture -p -f -l 8 -a video_rf.flac -b hifi_rf.flac -x baseband_pcm.bin
 ```
 
 What you want to see is a clean progress output without any notices
@@ -501,7 +518,7 @@ Captures are very large, expect hundreds of gigabytes per tape!
 ## Turning it into a Video
 
 The `misrc_capture` command will have output three files
-`video_rf.flac`, `hifi_rf.flac` and `linear_pcm.bin`. We can decode
+`video_rf.flac`, `hifi_rf.flac` and `baseband_pcm.bin`. We can decode
 each of these and combine them into a single video file.
 
 ### Video Component
@@ -522,20 +539,148 @@ inspect each frame. It has lots of useful visualisations to help tune
 your pipeline. Of note is the black SNR chart which will tell you
 roughly how clean your signal is.
 
+{{
+  image(
+    path="the-vhs-project/ld-analyse.jpg",
+    width=800,
+    height=600,
+    alt="Screenshot of the ld-analyse tool showing a frame with analysis graphs and visualisations",
+    caption="It means no worries.",
+    class="w100",
+    op="fit_width"
+  )
+}}
+
 You can tweak the black/white levels with `ld-analyze` to improve the
 picture, make sure to save the changes you make so that they take
 effect when you export the combined video later.
 
 ### HiFi Audio Component
 
-### Linear Audio Component
+If you have HiFi audio in your capture, turn it into a flac file with
+`hifi-decode`.
+
+```sh
+hifi-decode \
+  -p -f 40 \
+  --normalize --bias_guess --muting off \
+  --audio_rate 48000 \
+  hifi_rf.flac hifi.flac
+```
+
+Not much to add here, as you can guess, this produces a 48KHz stereo
+audio file.
+
+### Baseband Audio Component
+
+To extract the PCM stream from the AUX input use the `pcm_extract` tool
+on the AUX capture file:
+
+```sh
+cat baseband_pcm.bin | \
+pcm_extract 3 2 5 | \
+ffmpeg -y -f s16le -ar 78125 -ac 2 -i - baseband.wav
+```
+
+Depending on how you connected the jumpers between the PCM1802 board
+and the MISRC AUX pins, you need to specify the corresponding numbers
+(plus 2) to the `pcm_extract` utility.
+
+```sh
+pcm_extract <BCK> <DOUT> <LRCK>
+```
 
 ### Muxing it together
 
+At this point you should have `video_decoded.tbc`, `hifi.flac` and
+`baseband.wav`. But there's one more thing before we put it all
+together.
+
+#### Aligning Audio
+
+The audio files need to be clock aligned to the video,
+which you can do with the [Auto Audio
+Align](https://gitlab.com/wolfre/vhs-decode-auto-audio-align)
+tool.
+
+This tool is written for windows using mono, which can thankfully still
+be run on linux. What it does is essentially take the input audio and
+align it with reference to the `video_decoded.tbc.json` file which
+contains frame by frame metadata of the video decode.
+
+##### Baseband
+
+Since the baseband audio was captured with a 78125Hz sample rate, we
+need to be particular about how it's processed to ensure we don't
+change the duration of the track.
+
 ```sh
-tbc-video-export video_decoded.tbc
+# WAV → raw s16le stereo
+ffmpeg -i baseband.wav \
+  -filter 'channelmap=map=FL-FL|FR-FR' \
+  -f s16le -ac 2 - |
+
+# Time-align against RF capture (PCM1802 @ 78125 Hz, MISRC @ 40 MHz)
+mono VhsDecodeAutoAudioAlign.exe stream-align \
+  --sample-size-bytes 4 \
+  --stream-sample-rate-hz 78125 \
+  --json video_decoded.tbc.json \
+  --rf-video-sample-rate-hz 40000000 | \
+
+# Resample → 48 kHz 16 bit FLAC
+ffmpeg -f s16le -ar 78125 -ac 2 \
+  -af aresample=48000 \
+  -sample_fmt s16 -i - \
+  baseband_aligned.flac
 ```
 
-## Tuning the Signal Capture
+##### HiFi
+
+The HiFi audio was decoded into a conventional sampling rate already,
+but we still need to be sure we give the right values.
+
+```sh
+# WAV → raw s32le stereo
+ffmpeg -i hifi.flac \
+  -filter 'channelmap=map=FL-FL|FR-FR' \
+  -f s32le -ac 2 - |
+
+# Time-align against RF capture (Hifi @ 48 KHz, MISRC @ 40 MHz)
+mono VhsDecodeAutoAudioAlign.exe stream-align \
+  --sample-size-bytes 8 \
+  --stream-sample-rate-hz 48000 \
+  --json video_decoded.tbc.json \
+  --rf-video-sample-rate-hz 40000000 | \
+
+# Resample → 48 kHz 16 bit FLAC
+ffmpeg -f s32le -ar 48000 -ac 2 \
+  -af aresample=48000 \
+  -sample_fmt s16 -i - \
+  hifi_aligned.flac
+```
+
+#### Finally
+
+Now you can encode the video and both audio tracks into a conventional
+video container with `tbc-video-export`.
+
+```sh
+tbc-video-export \
+  video_decoded.tbc \
+  --audio-track hifi_aligned.flac \
+  --audio-track baseband_aligned.flac
+```
 
 ## Results
+
+Here's a gallery of clips from the tapes I've processed so far.
+
+{{
+  video(
+    path="the-vhs-project/disney_title.webm",
+    alt="A digitised tape snippet with both HiFi and baseband audio.",
+    caption="You wouldn't download a car."
+  )
+}}
+
+<!-- #TODO: More result samples -->

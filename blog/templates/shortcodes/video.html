@@ -1,5 +1,5 @@
 <figure {% if class %}class="{{ class }}" {% endif %}>
-  <video loop autoplay>
+  <video loop autoplay muted>
     <source src="/{{ path }}" type="video/webm" />
   </video>
   {% if caption %}<figcaption>{{ caption | markdown | safe }}</figcaption>{% endif %}
