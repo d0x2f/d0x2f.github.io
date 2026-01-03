@@ -57,13 +57,13 @@ have just yet.
 I discovered that there are generally two methods commonly used for
 digitisation, they are:
 
-- Gathering a bunch of hardware like a "time based corrector" (TBC) and
+- Gathering a bunch of hardware like a "time base corrector" (TBC) and
   a chain of such things like up-scalers, converters and a capture
   card. Connecting them together and recording the result.
-- Opening a VCR, finding where I can tap the raw RF signal from the
-  tape head, route it through an amplifier, ADC and a capture device
-  straight to my PC, then using software to decode the raw signal into
-  a video file.
+- Opening a VCR, finding where I can tap the raw RF (radio frequency)
+  signal from the tape head, route it through an amplifier, ADC and a
+  capture device straight to my PC, then using software to decode the
+  signal into a video file.
 
 Since my goal was mostly recreational, I just chose the method that
 looked the most fun and I don't think there's any arguing which option
@@ -204,7 +204,16 @@ way to transfer a lot of data over USB.
 
 ### PCM1802 Breakout Board
 
-<!-- #TODO: Image of the PCM1802 board -->
+{{
+  image(
+    path="the-vhs-project/pcm1802.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The PCM1802 board for baseband audio capture."
+    class="w100"
+  )
+}}
 
 Whether you need to go through the trouble of wiring in an audio ADC
 like this depends on if you want/need to capture the baseband audio on
@@ -238,7 +247,16 @@ that was also present in mine. The configuration pads on the back
 marked with `+`aren't connected to Vdd or to anything else. We need to
 connect it ourselves in order for the mode 0 bridge to take affect.
 
-<!-- #TODO: Picture of the bodges -->
+{{
+  image(
+    path="the-vhs-project/pcm1802-bodge.jpg",
+    width=800,
+    height=800,
+    op="fit",
+    alt="The PCM1802 board with bodge wire."
+    class="w100"
+  )
+}}
 
 ## Soldering Wires to my VCR
 
@@ -673,8 +691,42 @@ tbc-video-export \
 
 ## Results
 
-Here's a gallery of clips from the tapes I've processed so far.
+The difference in quality is stark! The first-pass cheap usb composite
+capture I did applied strong noise reduction and boosted saturation
+which washed out a lot of detail. I haven't played much with
+post-processing, I'm sure you could get even better results with some
+tweaking.
 
+Left picture shows the cheap conventional capture, right picture is
+using that hardware tap with vhs-decode:
+
+{{
+  image(
+    path="the-vhs-project/comparison-1.jpg",
+    width=800,
+    height=600,
+    alt="Comparison one of cheap usb composite capture and vhs-decode.",
+    caption="1996 Summer Olympics - Atlanta, Georgia.",
+    class="w100",
+    op="fit_width"
+  )
+}}
+
+{{
+  image(
+    path="the-vhs-project/comparison-2.jpg",
+    width=800,
+    height=600,
+    alt="Comparison two of cheap usb composite capture and vhs-decode.",
+    caption="Softer, with visible noise.",
+    class="w100",
+    op="fit_width"
+  )
+}}
+
+Here's a gallery of extra clips from the tapes I've processed so far.
+
+{% gallery() %}
 {{
   video(
     path="the-vhs-project/disney_title.webm",
@@ -682,5 +734,20 @@ Here's a gallery of clips from the tapes I've processed so far.
     caption="You wouldn't download a car."
   )
 }}
+{{
+  video(
+    path="the-vhs-project/disney_title.webm",
+    alt="A digitised tape snippet with both HiFi and baseband audio.",
+    caption="You wouldn't download a car."
+  )
+}}
+{{
+  video(
+    path="the-vhs-project/disney_title.webm",
+    alt="A digitised tape snippet with both HiFi and baseband audio.",
+    caption="You wouldn't download a car."
+  )
+}}
+{% end %}
 
 <!-- #TODO: More result samples -->
