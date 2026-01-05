@@ -1,5 +1,5 @@
 <figure {% if class %}class="{{ class }}" {% endif %}>
-  <video loop controls muted aria-label="{{ alt }}" poster="/{{ poster }}" preload="metadata">
+  <video loop controls muted aria-label="{{ alt }}" poster="/{{ poster }}" preload="none">
     {% if webm_source %}
     <source src=" /{{ webm_source }}" type="video/webm" />
     {% endif %}
