@@ -1,7 +1,7 @@
 +++
-title = "The VHS Project (Unpublished, Work in Progress)"
+title = "The VHS Project"
 description = "My journey digitising old family home videos from VHS tapes."
-date = "2025-12-22"
+date = "2026-01-04"
 
 [taxonomies]
 tags = [
@@ -258,6 +258,21 @@ connect it ourselves in order for the mode 0 bridge to take affect.
   )
 }}
 
+Note that `+5V` is power input while the `3.3V` pad is an output. Find
+a 5V output on the Tang Nano and connect a wire from there. You can
+also see in my picture that I've connected `3.3V` and `PDW` with a
+jumper, this is because that's just how you turn the board on according
+to the [PCM1802
+data-sheet](https://www.ti.com/lit/ds/symlink/pcm1802.pdf).
+
+Connect the `BCK`, `DOUT` and `LRCK` pins to the AUX input pins on the
+MISRC, these can connect to any input pin, you just need to know which
+is which when you extract the PCM stream later. The `SCK` pin
+represents the system clock input which you need to get from the SMA
+connector labelled `CLOCK OUT` on the MISRC board. You should also
+connect `GND` from this SMA connector since the clock signal is
+sensitive and should be properly shielded.
+
 ## Soldering Wires to my VCR
 
 This part required some research. I have a Panasonic DMR-ES35VP, which
@@ -405,6 +420,9 @@ and to ensure that there's a continuous electrical connection to every
 point in the shielding. You'll also want to solder a ground wire from
 an MISRC ground pin to the chassis shielding (just one).
 
+<!-- #TODO: Show a version of the below image with the PCM1802 board
+properly connected -->
+
 {{
   image(
     path="the-vhs-project/shielded-box.jpg",
@@ -428,8 +446,7 @@ more mould.
 So I went looking for an off-the-shelf VHS tape cleaner and found [this
 VHS mould cleaner from VHS is
 Life](https://vhsislife.com/got-mold-lets-fix-it-with-the-vhs-is-life-mold-cleaner/).
-
-It did a phenomenal job cleaning my tapes.
+It did a phenomenal job.
 
 {% gallery(caption="Before an after cleaning.") %}
 {{
@@ -451,7 +468,9 @@ It did a phenomenal job cleaning my tapes.
 {% end %}
 {{
   video(
-    path="the-vhs-project/tape-cleaning.webm",
+    webm_source="the-vhs-project/tape-cleaning-av1.webm",
+    mp4_source="the-vhs-project/tape-cleaning-h264.mp4",
+    poster="the-vhs-project/tape-cleaning.jpg",
     alt="A tape being cleaned",
     caption="The cleaner in action.",
     class="w50 block mx-auto"
@@ -689,6 +708,26 @@ tbc-video-export \
   --audio-track baseband_aligned.flac
 ```
 
+This will create a `video_decoded.mkv` file, a conventional video.
+
+### Archive vs Viewing Copies
+
+You've now created an "archive" copy of the tape which is suitable for
+long term storage as a master. If you have the space for it, you can
+also keep the raw RF files (`video_rf.flac`, `hifi_rf.flac` and
+`baseband.bin`). This will let you take advantage of improvements to
+the `vhs-decode` software in the future for better decodes.
+
+You can probably tell that it's not the best for actual viewing since
+it has a lot of combing from interlacing and it's generally not as
+clear as it could be. What you can do from here is produce a "viewing"
+copy, which is what you would typically share with others.
+
+For this I recommend reading [this
+gist](https://gist.github.com/namazso/6b4df92ffc4f19d62414034a843fa686)
+by namazso which explains the concepts involved and provides a really
+nice vapoursynth script which I used for the samples below.
+
 ## Results
 
 The difference in quality is stark! The first-pass cheap usb composite
@@ -718,36 +757,40 @@ using that hardware tap with vhs-decode:
     width=800,
     height=600,
     alt="Comparison two of cheap usb composite capture and vhs-decode.",
-    caption="Softer, with visible noise.",
+    caption="Much better detail with less colour bleeding.",
     class="w100",
     op="fit_width"
   )
 }}
 
-Here's a gallery of extra clips from the tapes I've processed so far.
+Here's a gallery of extra clips from the tapes I've processed so far:
 
 {% gallery() %}
 {{
   video(
-    path="the-vhs-project/disney_title.webm",
-    alt="A digitised tape snippet with both HiFi and baseband audio.",
+    webm_source="the-vhs-project/disney-clip-av1.webm",
+    mp4_source="the-vhs-project/disney-clip-h264.mp4",
+    poster="the-vhs-project/disney-clip.jpg",
+    alt="A digitised commerical tape snippet of a disney title sequence with both HiFi and baseband audio.",
     caption="You wouldn't download a car."
   )
 }}
 {{
   video(
-    path="the-vhs-project/disney_title.webm",
-    alt="A digitised tape snippet with both HiFi and baseband audio.",
-    caption="You wouldn't download a car."
+    webm_source="the-vhs-project/cowboy-clip-av1.webm",
+    mp4_source="the-vhs-project/cowboy-clip-h264.mp4",
+    poster="the-vhs-project/cowboy-clip.jpg",
+    alt="A digitised home video tape snippet showing a man with a cowboy hat on the beach.",
+    caption="Howdy."
   )
 }}
 {{
   video(
-    path="the-vhs-project/disney_title.webm",
-    alt="A digitised tape snippet with both HiFi and baseband audio.",
+    webm_source="the-vhs-project/flowers-clip-av1.webm",
+    mp4_source="the-vhs-project/flowers-clip-h264.mp4",
+    poster="the-vhs-project/flowers-clip.jpg",
+    alt="A digitised home video tape snippet showing flowers on the side of the road.",
     caption="You wouldn't download a car."
   )
 }}
 {% end %}
-
-<!-- #TODO: More result samples -->
