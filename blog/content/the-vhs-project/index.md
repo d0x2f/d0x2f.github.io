@@ -748,7 +748,7 @@ using that hardware tap with vhs-decode:
     path="the-vhs-project/comparison-1.jpg",
     width=800,
     height=600,
-    alt="Comparison one of cheap usb composite capture and vhs-decode.",
+    alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
     caption="1996 Summer Olympics - Atlanta, Georgia.",
     class="w100",
     op="fit_width"
@@ -760,8 +760,20 @@ using that hardware tap with vhs-decode:
     path="the-vhs-project/comparison-2.jpg",
     width=800,
     height=600,
-    alt="Comparison two of cheap usb composite capture and vhs-decode.",
-    caption="Much better detail with less colour bleeding.",
+    alt="Comparison #2 of cheap usb composite capture and vhs-decode.",
+    caption="Better detail with less colour bleeding.",
+    class="w100",
+    op="fit_width"
+  )
+}}
+
+{{
+  image(
+    path="the-vhs-project/comparison-3.jpg",
+    width=800,
+    height=600,
+    alt="Comparison #3 of cheap usb composite capture and vhs-decode.",
+    caption="Better contrast and detail.",
     class="w100",
     op="fit_width"
   )
