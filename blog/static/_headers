@@ -1,8 +1,18 @@
 /*.jpg
+  Cache-Control: public, max-age=604800
+
 /*.png
+  Cache-Control: public, max-age=604800
+
 /*.webp
+  Cache-Control: public, max-age=604800
+
 /*.svg
+  Cache-Control: public, max-age=604800
+
 /*.mp4
+  Cache-Control: public, max-age=604800
+
 /*.webm
   Cache-Control: public, max-age=604800
 
@@ -10,6 +20,8 @@
   Cache-Control: public, max-age=604800
 
 /*.css
+  Cache-Control: public, max-age=604800
+
 /*.js
   Cache-Control: public, max-age=604800
 
@@ -17,12 +29,20 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
 /404.html
+  Cache-Control: public, max-age=0, must-revalidate
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
 /rss.xml
+  Cache-Control: public, max-age=3600
+
 /atom.xml
+  Cache-Control: public, max-age=3600
+
 /sitemap.xml
   Cache-Control: public, max-age=3600
 
