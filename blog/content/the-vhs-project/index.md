@@ -550,7 +550,11 @@ conveys the idea.
 }}
 {% end %}
 
-Captures are very large, expect hundreds of gigabytes per tape!
+Captures are very large, expect about 120GB per capture stream
+(video/hifi/baseband) per hour! You also need a lot of space for
+processing them into tbc and video files which can be equally as large.
+I recommend that you have a few TB available and do one tape at a time
+or risk running out of space and having to start again.
 
 ## Turning it into a Video
 
