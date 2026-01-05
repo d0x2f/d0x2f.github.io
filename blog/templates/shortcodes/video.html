@@ -1,0 +1,11 @@
+<figure {% if class %}class="{{ class }}" {% endif %}>
+  <video loop controls muted aria-label="{{ alt }}" poster="/{{ poster }}" preload="metadata">
+    {% if webm_source %}
+    <source src=" /{{ webm_source }}" type="video/webm" />
+    {% endif %}
+    {% if mp4_source %}
+    <source src="/{{ mp4_source }}" type="video/mp4" />
+    {% endif %}
+  </video>
+  {% if caption %}<figcaption>{{ caption | markdown | safe }}</figcaption>{% endif %}
+</figure>

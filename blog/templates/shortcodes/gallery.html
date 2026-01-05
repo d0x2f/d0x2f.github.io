@@ -1,0 +1,8 @@
+<div class="gallery{% if class %} {{ class }}{% endif %}">
+  <div class="figures">
+    {{ body | safe }}
+  </div>
+  {% if caption %}
+  <p class="caption">{{ caption }}</p>
+  {% endif %}
+</div>
