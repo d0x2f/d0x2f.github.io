@@ -1,0 +1,37 @@
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/rss.xml
+/atom.xml
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+
+/*.css
+/*.js
+  Cache-Control: public, max-age=604800
+
+
+/fonts/*
+  Cache-Control: public, max-age=604800
+
+
+/*.png
+/*.webp
+/*.svg
+  Cache-Control: public, max-age=604800
+
+
+/*.mp4
+/*.webm
+  Cache-Control: public, max-age=604800
+
+
+/processed_images/*
+  Cache-Control: public, max-age=31536000, immutable
