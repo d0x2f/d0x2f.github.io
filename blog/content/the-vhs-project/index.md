@@ -448,7 +448,7 @@ VHS mould cleaner from VHS is
 Life](https://vhsislife.com/got-mold-lets-fix-it-with-the-vhs-is-life-mold-cleaner/).
 It did a phenomenal job.
 
-{% gallery(caption="Before an after cleaning.") %}
+{% gallery(caption="Before and after cleaning.") %}
 {{
   image(
     path="the-vhs-project/tape-mouldy.jpg",
@@ -790,7 +790,7 @@ Here's a gallery of extra clips from the tapes I've processed so far:
     mp4_source="the-vhs-project/flowers-clip-h264.mp4",
     poster="the-vhs-project/flowers-clip.jpg",
     alt="A digitised home video tape snippet showing flowers on the side of the road.",
-    caption="You wouldn't download a car."
+    caption="Very interesting."
   )
 }}
 {% end %}
