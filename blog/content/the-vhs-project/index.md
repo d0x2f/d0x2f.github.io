@@ -785,7 +785,7 @@ using that hardware tap with vhs-decode:
     width=800,
     height=600,
     alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
-    caption="Honestly the original seems much the same.",
+    caption="Honestly the left seems a bit better ¯\\_(ツ)_/¯.",
     class="w100",
     op="fit_width"
   )
