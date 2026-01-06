@@ -749,7 +749,7 @@ using that hardware tap with vhs-decode:
     width=800,
     height=600,
     alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
-    caption="1996 Summer Olympics - Atlanta, Georgia.",
+    caption="Honestly the original seems much the same.",
     class="w100",
     op="fit_width"
   )
@@ -761,7 +761,7 @@ using that hardware tap with vhs-decode:
     width=800,
     height=600,
     alt="Comparison #2 of cheap usb composite capture and vhs-decode.",
-    caption="Better detail with less colour bleeding.",
+    caption="Slightly better detail I guess.",
     class="w100",
     op="fit_width"
   )
@@ -773,11 +773,22 @@ using that hardware tap with vhs-decode:
     width=800,
     height=600,
     alt="Comparison #3 of cheap usb composite capture and vhs-decode.",
-    caption="Better contrast and detail.",
+    caption="You can now see Mufasa's whiskers and Rafiki's shading.",
     class="w100",
     op="fit_width"
   )
 }}
+
+In my opinion the quality gain for tapes this old is minimal. The real
+advantage is in recovering completely lost sections of tape. There are
+many cases where the cheap USB composite capture only showed static
+while vhs-decode managed to recover an image. If your tapes are not
+particularly degraded, then I'm not sure I could say all this trouble
+is worth it (unless, like me, you find this kind of thing fun).
+
+Having said that, there's absolutely a lot of room for improvement and
+maybe with some effort, I could eek out some improvements that would
+make it worth while.
 
 Here's a gallery of extra clips from the tapes I've processed so far:
 
