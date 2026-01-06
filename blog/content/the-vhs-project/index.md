@@ -734,22 +734,22 @@ nice vapoursynth script which I used for the samples below.
 
 ## Results
 
-The difference in quality is stark! The first-pass cheap usb composite
-capture I did applied strong noise reduction and boosted saturation
-which washed out a lot of detail. I haven't played much with
-post-processing, I'm sure you could get even better results with some
-tweaking.
+The difference in quality isn't mind blowing, in fact it's rather
+subtle. The first-pass cheap usb composite capture I did applied strong
+noise reduction and boosted saturation which washed out some detail
+detail. I haven't played much with post-processing, I'm sure you could
+get even better results with some tweaking.
 
-Left picture shows the cheap conventional capture, right picture is
+Left picture shows the cheap usb composite capture, right picture is
 using that hardware tap with vhs-decode:
 
 {{
   image(
-    path="the-vhs-project/comparison-1.jpg",
+    path="the-vhs-project/comparison-1-redo.jpg",
     width=800,
     height=600,
     alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
-    caption="Honestly the original seems much the same.",
+    caption="Slightly better detail, more neutral and honest colours.",
     class="w100",
     op="fit_width"
   )
@@ -779,6 +779,18 @@ using that hardware tap with vhs-decode:
   )
 }}
 
+{{
+  image(
+    path="the-vhs-project/comparison-4.jpg",
+    width=800,
+    height=600,
+    alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
+    caption="Honestly the original seems much the same.",
+    class="w100",
+    op="fit_width"
+  )
+}}
+
 In my opinion the quality gain for tapes this old is minimal. The real
 advantage is in recovering completely lost sections of tape. There are
 many cases where the cheap USB composite capture only showed static
@@ -787,8 +799,8 @@ particularly degraded, then I'm not sure I could say all this trouble
 is worth it (unless, like me, you find this kind of thing fun).
 
 Having said that, there's absolutely a lot of room for improvement and
-maybe with some effort, I could eek out some improvements that would
-make it worth while.
+maybe with some effort, I could eek out some better quality captures
+that would make it worth while.
 
 Here's a gallery of extra clips from the tapes I've processed so far:
 
