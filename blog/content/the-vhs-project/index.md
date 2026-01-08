@@ -226,8 +226,7 @@ For the version of the MISRC board available to me at the time of
 writing (v1.5a), in order to capture baseband audio, you need to supply
 a PCM stream to the AUX pins. Newer versions of the MISRC will support
 this on-board instead of requiring a separate addon, so check the
-documentation for the MISRC version you have to decide if you need need
-it.
+documentation for the MISRC version you have to decide if you need it.
 
 Setting this up for baseband audio capture is not as straight forward
 as one would think. The idea is to input the RCA output from the VCR,
