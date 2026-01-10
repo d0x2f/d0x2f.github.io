@@ -744,7 +744,7 @@ using that hardware tap with vhs-decode:
 
 {{
   image(
-    path="the-vhs-project/comparison-1-redo.jpg",
+    path="the-vhs-project/comparison-1-r3.jpg",
     width=800,
     height=600,
     alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
@@ -780,7 +780,7 @@ using that hardware tap with vhs-decode:
 
 {{
   image(
-    path="the-vhs-project/comparison-4.jpg",
+    path="the-vhs-project/comparison-4-r2.jpg",
     width=800,
     height=600,
     alt="Comparison #1 of cheap usb composite capture and vhs-decode.",
