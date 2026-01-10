@@ -8,7 +8,8 @@ feed_filenames = ["atom.xml", "rss.xml"]
 taxonomies = [{ name = "tags", feed = true, render = false }]
 
 [markdown]
-highlight_code = true
 insert_anchor_links = "heading"
 external_links_target_blank = true
-highlight_theme = "boron"
+
+[markdown.highlighting]
+theme = "dark-plus"
