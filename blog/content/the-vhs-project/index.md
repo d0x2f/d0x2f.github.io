@@ -13,6 +13,10 @@ tags = [
 [extra]
 author = "Dylan McGannon"
 x_handle = "@D0x2f"
+
+[[extra.images]]
+path = "the-vhs-project/cowboy-clip.jpg"
+alt = "Title image showing a captured VHS frame."
 +++
 
 ## The Situation
