@@ -9,7 +9,8 @@
 
   <link rel="stylesheet" href="{{ get_url(path='style.css', trailing_slash=false) }}">
   <link rel="icon" href="/favicon.png" type="image/png">
-
+  
+ 
   {% block rss %}
   {%- if config.generate_feed %}
   <link rel="alternate" type="application/rss+xml" title="RSS"
@@ -18,6 +19,8 @@
   {% endblock %}
 
   {%- block extra_head %}{% endblock extra_head %}
+  
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "33203c995b744b9f88173e507907be52"}'></script>
 </head>
 
 <body>
