@@ -265,7 +265,7 @@ postgres=# \d
 You can see that a query plan to select rows where `created_at >
 '2025-05-28 12:00:00+00'`, results in a query plan that ignores
 partitions `invoice_2025_05_26` and `invoice_2025_05_27`, while
-applying the filter to `invoice_2025_05_28` using the index as well as
+applying the filter to `invoice_2025_05_28` as well as
 the remaining future partitions:
 
 ```sql
@@ -581,7 +581,7 @@ you do it.
 ALTER TABLE invoice_default
   ADD CONSTRAINT temp_check_constraint_partition_2025_06_26
     CHECK (
-      created_at < '2025-05-26' AND
+      created_at < '2025-05-26' OR
       created_at >= '2025-05-27'
     )
   NOT VALID;
