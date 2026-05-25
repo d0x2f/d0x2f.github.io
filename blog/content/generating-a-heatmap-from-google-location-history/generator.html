@@ -313,7 +313,7 @@
 
       const map = new maplibregl.Map({
         container: 'map',
-        style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
         center: initialCenter,
         zoom: 5,
       });
@@ -327,9 +327,10 @@
             data: points,
             getPosition: d => d,
             getWeight: 1,
-            radiusPixels: 30,
+            radiusPixels: 40,
             intensity: 1,
-            threshold: 0.05,
+            threshold: 0,
+            colorDomain: [0, 10],
           })
         ]
       });
