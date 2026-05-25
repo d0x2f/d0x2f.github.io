@@ -235,7 +235,6 @@
   <div id="map"></div>
 
   <script src='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js'></script>
-  <script src="https://unpkg.com/deck.gl@9/dist.min.js"></script>
   <script>
     function pointFromString(str) {
       if (!str) throw new Error("Cannot parse empty string");
@@ -320,23 +319,39 @@
 
       await new Promise(resolve => map.once('load', resolve));
 
-      const deckOverlay = new deck.MapboxOverlay({
-        layers: [
-          new deck.HeatmapLayer({
-            id: 'heatmap',
-            data: points,
-            getPosition: d => d,
-            getWeight: 1,
-            radiusPixels: 10,
-            intensity: 1,
-            threshold: 0,
-            colorDomain: [0, 10],
-            colorRange: [[0, 0, 180], [80, 0, 200], [180, 0, 180], [220, 0, 80], [200, 0, 0]],
-          })
-        ]
+      map.addSource('points', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: points.map(([lng, lat]) => ({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [lng, lat] },
+            properties: {},
+          })),
+        },
       });
 
-      map.addControl(deckOverlay);
+      map.addLayer({
+        id: 'heatmap',
+        type: 'heatmap',
+        source: 'points',
+        paint: {
+          'heatmap-radius': 10,
+          'heatmap-intensity': 1,
+          'heatmap-opacity': 1,
+          'heatmap-weight': 1,
+          'heatmap-color': [
+            'interpolate', ['linear'], ['heatmap-density'],
+            0,   'rgba(0,0,0,0)',
+            0.1, 'rgb(0,0,180)',
+            0.3, 'rgb(80,0,200)',
+            0.5, 'rgb(180,0,180)',
+            0.7, 'rgb(220,0,80)',
+            1,   'rgb(200,0,0)',
+          ],
+        },
+      });
+
       console.log(`Loaded ${points.length} points.`);
     }
 
