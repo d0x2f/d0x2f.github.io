@@ -25,6 +25,7 @@
     content="An online tool to generate a heatmap visualisation of your exported Google timeline location history." />
 
   <title>Location History Heatmap Generator</title>
+  <link href='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     html,
     body {
@@ -233,20 +234,20 @@
 
   <div id="map"></div>
 
+  <script src='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js'></script>
+  <script src="https://unpkg.com/deck.gl@9/dist.min.js"></script>
   <script>
-    const GOOGLE_MAPS_KEY = 'AIzaSyBTvqN89ijdjhkfOrN4ilm2xPrQ27FEh1A';
-
     function pointFromString(str) {
       if (!str) throw new Error("Cannot parse empty string");
 
-      const coords = str.replaceAll('\u00B0', '').split(',').map(s => s.trim());
+      const coords = str.replaceAll('°', '').split(',').map(s => s.trim());
       if (coords.length !== 2) throw new Error(`Error parsing string: ${str}`);
 
       const lat = parseFloat(coords[0]);
       const lng = parseFloat(coords[1]);
       if (isNaN(lat) || isNaN(lng)) throw new Error(`Invalid coordinate values: ${str}`);
 
-      return new google.maps.LatLng(lat, lng);
+      return [lng, lat];
     }
 
     function extractSegments(segments) {
@@ -305,20 +306,36 @@
       setPanel('loading');
       const points = await getPoints();
 
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 5,
-        center: points[0] ?? new google.maps.LatLng(0, 0),
-      });
+      const initialCenter = points.length > 0 ? points[0] : [0, 0];
 
-      const heatmap = new google.maps.visualization.HeatmapLayer({
-        data: points,
-        dissipating: true,
-        maxIntensity: 10,
-      });
-
-      heatmap.setMap(map);
       setPanel('map');
+      await new Promise(requestAnimationFrame);
 
+      const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        center: initialCenter,
+        zoom: 5,
+      });
+
+      await new Promise(resolve => map.once('load', resolve));
+
+      const deckOverlay = new deck.MapboxOverlay({
+        layers: [
+          new deck.HeatmapLayer({
+            id: 'heatmap',
+            data: points,
+            getPosition: d => d,
+            getWeight: 1,
+            radiusPixels: 10,
+            intensity: 1,
+            threshold: 0,
+            colorDomain: [0, 10],
+          })
+        ]
+      });
+
+      map.addControl(deckOverlay);
       console.log(`Loaded ${points.length} points.`);
     }
 
@@ -345,19 +362,13 @@
       }
     }
 
-    function mapApiLoaded() {
+    document.addEventListener('DOMContentLoaded', () => {
       setPanel('input');
       document.getElementById('submitButton').addEventListener('click', tryRenderMap);
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=visualization&loading=async&callback=mapApiLoaded`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    document.getElementById('fileInput').addEventListener('change', function () {
-      const fileNameSpan = document.getElementById('fileName');
-      fileNameSpan.textContent = this.files.length > 0 ? this.files[0].name : 'No file selected';
+      document.getElementById('fileInput').addEventListener('change', function () {
+        const fileNameSpan = document.getElementById('fileName');
+        fileNameSpan.textContent = this.files.length > 0 ? this.files[0].name : 'No file selected';
+      });
     });
   </script>
 </body>
